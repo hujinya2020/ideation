@@ -902,7 +902,7 @@
                                     </path>
                                 </svg> if you want the chatbot to generate images. </li>
 
-                            <li style="margin-bottom: 10px;">Please wait for several seconds for
+                            <li style="margin-bottom: 10px;">Please wait for 8-10 seconds for
                                 responses.</li>
                         </ul>
                     </li>
@@ -1355,8 +1355,7 @@
             receivedID: null,
             pageTimings: {},
             gptPage: {
-                messages: [],
-                idea: null
+                messages: []
             },
             agePage: {
                 age: null
@@ -1365,6 +1364,7 @@
                 ideas: []
             },
             taskPage: {
+                messages: [],
                 ideas: []
             },
             surveyPage: {
@@ -1387,29 +1387,29 @@
             });
 
             function sendToFirebase(data) {
-        const uniqueID = data.uniqueIndex;
-        firebase.database().ref('experiments/' + uniqueID).set(data, (error) => {
-            if (error) {
-                console.error("Data could not be saved. " + error);
-            } else {
-                console.log("Data saved successfully.");
+                const uniqueID = data.uniqueIndex;
+                firebase.database().ref('experiments/' + uniqueID).set(data, (error) => {
+                    if (error) {
+                        console.error("Data could not be saved. " + error);
+                    } else {
+                        console.log("Data saved successfully.");
+                    }
+                });
             }
-        });
-    }
 
-    document.addEventListener('fullscreenchange', function () {
-        if (!document.fullscreenElement && currentPage !== 'welcomePage' && currentPage !== 'endPage') {
-            terminateExperiment();
-        }
-    });
+            document.addEventListener('fullscreenchange', function () {
+                if (!document.fullscreenElement && currentPage !== 'welcomePage' && currentPage !== 'endPage') {
+                    terminateExperiment();
+                }
+            });
 
-    function terminateExperiment() {
-        alert("Since you have exited the full-screen mode, the experiment has been ended. The data will be downloaded and sent to Firebase.");
-        collectTaskResponses();
-        collectSurveyResponses();
-        sendToFirebase(experimentData);
-        downloadExperimentData();
-    }
+            async function terminateExperiment() {
+                alert("Since you have exited the full-screen mode, the experiment has been ended. The data will be downloaded and sent to Firebase.");
+                collectTaskResponses();
+                collectSurveyResponses();
+                await downloadExperimentData();
+                sendToFirebase(experimentData);
+            }
 
             function preventCopyPaste(e) {
                 e.preventDefault();
@@ -1503,8 +1503,8 @@
             const wordCountGPT = document.getElementById('wordCountGPT');
             const chatDisplayGptPage = document.getElementById('chatDisplayGptPage');
 
-            let textMessageSent = true;
-            let imageMessageSent = true;
+            let textMessageSent = false;
+            let imageMessageSent = false;
 
             function getWordCount(text) {
                 text = text.trim();
@@ -1569,23 +1569,23 @@
             });
 
             document.getElementById('submitButton').addEventListener('click', async function (event) {
-        event.preventDefault();
-        if (validateSurveyInputs()) {
-            collectTaskResponses();
-            collectSurveyResponses();
-            endTimer('surveyPage');
-            sendToFirebase(experimentData);
-            await downloadExperimentData();
-            if (document.fullscreenElement) {
-                document.exitFullscreen().then(() => {
-                    console.log('Exited full-screen mode.');
-                }).catch((err) => {
-                    console.error(`Error attempting to exit full-screen mode: ${err}`);
-                });
-            }
-            transitionToPage('endPage');
-        }
-    });
+                event.preventDefault();
+                if (validateSurveyInputs()) {
+                    collectTaskResponses();
+                    collectSurveyResponses();
+                    endTimer('surveyPage');
+                    await downloadExperimentData();
+                    sendToFirebase(experimentData);
+                    if (document.fullscreenElement) {
+                        document.exitFullscreen().then(() => {
+                            console.log('Exited full-screen mode.');
+                        }).catch((err) => {
+                            console.error(`Error attempting to exit full-screen mode: ${err}`);
+                        });
+                    }
+                    transitionToPage('endPage');
+                }
+            });
 
             const sendButtons = [
                 { buttonId: 'sendGptPage', inputId: 'chatbotInputGptPage', displayId: 'chatDisplayGptPage' },
@@ -1631,7 +1631,7 @@
                 const messageElement = document.createElement('div');
                 messageElement.classList.add('message', sender);
 
-                if (sender === 'bot' && message.startsWith('http')) {
+                if (sender === 'bot' && message.startsWith('data:image')) {
                     const img = document.createElement('img');
                     img.src = message;
                     img.alt = 'Generated image';
@@ -1644,7 +1644,13 @@
                 chatDisplay.scrollTop = chatDisplay.scrollHeight;
 
                 const messageData = { type: sender, content: message, timestamp: new Date().toISOString() };
-                experimentData.gptPage.messages.push(messageData);
+
+                // Store messages in the correct page
+                if (pageId === 'gptPage') {
+                    experimentData.gptPage.messages.push(messageData);
+                } else if (pageId === 'taskPage') {
+                    experimentData.taskPage.messages.push(messageData);
+                }
             }
 
             async function callOpenAIAPI(userMessage, chatDisplay, pageId) {
@@ -1695,7 +1701,8 @@
                             model: "dall-e-3",
                             prompt: userMessage,
                             n: 1,
-                            size: "1024x1024"
+                            size: "1024x1024",
+                            response_format: "b64_json"
                         })
                     });
 
@@ -1704,8 +1711,10 @@
                     }
 
                     const data = await response.json();
-                    const image_url = data.data[0].url;
-                    displayMessage(image_url, 'bot', chatDisplay, pageId);
+                    const imageData = data.data[0].b64_json;
+                    const imageUrl = `data:image/png;base64,${imageData}`;
+                    displayMessage(imageUrl, 'bot', chatDisplay, pageId);
+
                 } catch (error) {
                     console.error("Error calling the DALL-E 3 API:", error);
                     displayMessage("Failed to generate an image.", 'bot', chatDisplay, pageId);
@@ -1844,7 +1853,7 @@
                         startAutButtonCountdown();
                         break;
                     case 'autPage':
-                        startCountdown(1, 'autCountdown');
+                        startCountdown(30, 'autCountdown');
                         break;
                     case 'beforeTaskPage':
                         startTaskButtonCountdown();
@@ -1902,6 +1911,7 @@
                     experimentData.pageTimings[pageName].timeSpentSeconds = timeSpent;
                 }
             }
+
             function validateSurveyInputs() {
                 let isValid = true;
                 let errorMessages = [];
@@ -2057,7 +2067,7 @@
             }
 
             function startTaskTimer() {
-                let timeLeft = 1; // 5 minutes in seconds
+                let timeLeft = 300; // 5 minutes in seconds
                 go2SurveyPage.disabled = true;
 
                 timer = setInterval(() => {
@@ -2240,6 +2250,7 @@
             });
         });
     </script>
+
 </body>
 
 </html>

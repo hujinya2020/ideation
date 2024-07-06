@@ -4,19 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>main_page</title>
-
+    <title>Creative Ideation Experiment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #ffffff;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f0f4f8;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             color: #333;
+            line-height: 1.6;
         }
 
         #taskRightside,
@@ -24,25 +25,47 @@
         #gptLeftside,
         #gptRightside {
             width: 48%;
-            height: 100%;
+            height: 80vh;
+            min-height: 800px;
             display: flex;
             flex-direction: column;
             background-color: #fff;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 5vh;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            overflow-y: auto;
+        }
+
+
+        #gptPage,
+        #taskPage {
+            display: none;
+            width: 98%;
+            height: 98vh;
+            /* This sets the container to almost full viewport height */
+            justify-content: space-around;
+            align-items: flex-start;
+            /* Change this from center to flex-start */
+            padding-bottom: 0vh;
+            padding-top: 2vh;
+            /* Reduce top padding */
+            box-sizing: border-box;
+            margin: auto;
+            border-radius: 12px;
         }
 
         #chatbot {
             width: 100%;
             height: 100%;
+            /* Make chatbot fill the entire height of its container */
             display: flex;
             flex-direction: column;
             background-color: #fff;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
         #taskRightside,
@@ -52,12 +75,13 @@
         }
 
         #errorTask {
-            color: #d9534f;
+            color: #e74c3c;
             display: none;
-            font-size: 12px;
+            font-size: 14px;
             width: 100%;
             text-align: center;
             margin-top: 10px;
+            font-weight: 500;
         }
 
         #aut-container {
@@ -66,23 +90,23 @@
             display: flex;
             flex-direction: column;
             background-color: #fff;
-            border: 1px solid #e5e5e5;
-            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
             margin-bottom: 5vh;
             padding: 20px;
             box-sizing: border-box;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         #chatbot>p {
-            background-color: #ffffff;
-            color: #333;
+            background-color: #3498db;
+            color: #fff;
             margin: 0;
             padding: 15px;
-            border-bottom: 1px solid #e5e5e5;
             display: flex;
             align-items: center;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 12px 12px 0 0;
         }
 
         #taskInstructions,
@@ -93,12 +117,13 @@
             width: calc(100% - 60px);
             margin: 10px;
             background-color: #fff;
-            border: 1px solid #e5e5e5;
+            border: 1px solid #e0e0e0;
             overflow-y: auto;
             border-radius: 8px;
             user-select: none;
             flex-grow: 1;
             text-align: left;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         #autTask {
@@ -106,11 +131,12 @@
             width: calc(100% - 60px);
             margin: 10px;
             background-color: #fff;
-            border: 1px solid #e5e5e5;
+            border: 1px solid #e0e0e0;
             overflow-y: auto;
             border-radius: 8px;
             user-select: none;
             flex-grow: 1;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         #gptInstructions {
@@ -120,25 +146,25 @@
         #chatDisplayGptPage,
         #chatDisplayTask {
             flex: 1;
-            overflow: auto;
+            overflow-y: auto;
             padding: 20px;
-            max-width: 100%;
+            height: 80%;
             word-wrap: break-word;
             overflow-wrap: break-word;
             white-space: normal;
             display: flex;
             flex-direction: column;
-            font-size: 12px;
+            font-size: 14px;
             text-align: left;
         }
 
         #inputContainer {
             display: flex;
             align-items: center;
-            background-color: #ffffff;
-            border-top: 1px solid #e5e5e5;
+            background-color: #f5f5f5;
+            border-top: 1px solid #e0e0e0;
             padding: 10px;
-            border-radius: 0 0 8px 8px;
+            border-radius: 0 0 12px 12px;
             margin-top: auto;
         }
 
@@ -147,9 +173,9 @@
             flex-grow: 1;
             margin: 0;
             border: none;
-            background-color: #f7f7f8;
+            background-color: #fff;
             color: #333;
-            font-size: 12px;
+            font-size: 14px;
             padding: 12px 16px;
             border-radius: 20px;
             resize: none;
@@ -157,41 +183,51 @@
             min-height: 56px;
             max-height: 200px;
             overflow-y: auto;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        #chatbotInputGptPage:focus,
+        #chatbotInputTask:focus {
+            outline: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         #chatbotInputGptPage::placeholder,
         #chatbotInputTask::placeholder {
-            color: #8e8ea0;
+            color: #aaa;
         }
 
         #sendGptPage,
         #sendTask,
         #imageGptPage,
         #imageTask {
-            width: 32px;
-            height: 32px;
-            background-color: transparent;
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
             border: none;
+            border-radius: 50%;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             margin-left: 8px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        #sendGptPage:hover,
+        #sendTask:hover,
+        #imageGptPage:hover,
+        #imageTask:hover {
+            background-color: #2980b9;
+            transform: scale(1.05);
         }
 
         .send-icon,
         .image-icon {
-            width: 16px;
-            height: 16px;
-            fill: #8e8ea0;
-        }
-
-        #sendGptPage:hover .send-icon,
-        #sendTask:hover .send-icon,
-        #imageGptPage:hover .image-icon,
-        #imageTask:hover .image-icon {
-            fill: #10a37f;
+            width: 20px;
+            height: 20px;
+            fill: #fff;
         }
 
         #namearea,
@@ -200,12 +236,22 @@
         #reasonAreaGPT {
             width: calc(100% - 20px);
             margin: 10px;
-            border: 1px solid #e5e5e5;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 10px;
             box-sizing: border-box;
             resize: none;
-            font-size: 13px;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #namearea:focus,
+        #reasonarea:focus,
+        #nameAreaGPT:focus,
+        #reasonAreaGPT:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
 
         #nameAreaGPT {
@@ -230,23 +276,37 @@
             border-radius: 8px;
             max-width: 80%;
             line-height: 1.5;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .user {
             align-self: flex-end;
-            background-color: #f7f7f8;
-            border: 1px solid #e5e5e5;
+            background-color: #e1f5fe;
+            border: 1px solid #b3e5fc;
         }
 
         .bot {
             align-self: flex-start;
-            background-color: #f7f7f8;
-            border: 1px solid #e5e5e5;
+            background-color: #f1f8e9;
+            border: 1px solid #dcedc8;
         }
 
         .bot img {
             max-width: 100%;
             border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .logo-icon {
@@ -261,16 +321,17 @@
         #autButton,
         #taskButton,
         #go2BeforeTaskPage {
-            background-color: #10a37f;
+            background-color: #2ecc71;
             color: #ffffff;
             font-weight: bold;
-            border-radius: 8px;
+            border-radius: 25px;
             padding: 12px 30px;
             margin-top: 20px;
             cursor: pointer;
             border: none;
             font-size: 16px;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         #go2SurveyPage,
@@ -287,7 +348,9 @@
         #taskButton:hover,
         #go2AgePage:hover,
         #go2BeforeTaskPage:hover {
-            background-color: #0d8c6d;
+            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
 
         #welcomePage,
@@ -299,15 +362,15 @@
         #surveyPage,
         #endPage {
             display: none;
-            width: 95%;
-            height: 95%;
+            width: 98%;
+            height: 98%;
             justify-content: space-around;
             align-items: center;
             padding-bottom: 0vh;
             padding-top: 5vh;
             box-sizing: border-box;
             margin: auto;
-            border-radius: 8px;
+            border-radius: 12px;
         }
 
         #welcomePage {
@@ -318,21 +381,22 @@
         #readyButton:disabled,
         #autButton:disabled,
         #taskButton:disabled {
-            background-color: #cccccc;
-            color: #666666;
+            background-color: #bdc3c7;
+            color: #7f8c8d;
             cursor: not-allowed;
+            box-shadow: none;
         }
 
         .word-count {
             padding: 5px;
             font-size: 14px;
-            color: #666;
+            color: #7f8c8d;
         }
 
         .wordCount {
             margin-top: 5px;
             font-size: 12px;
-            color: #666;
+            color: #7f8c8d;
             align-self: flex-end;
             width: 90%;
         }
@@ -343,54 +407,71 @@
             margin-right: auto;
             max-width: 100%;
             border-radius: 8px;
-            text-align: left;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         #modal {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
         }
 
         #modal>div {
             background: #fff;
             padding: 30px;
-            border-radius: 8px;
+            border-radius: 12px;
             text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
 
         #closeModal {
-            background-color: #10a37f;
+            background-color: #3498db;
             color: #fff;
             border: none;
             padding: 10px 20px;
-            border-radius: 5px;
+            border-radius: 25px;
             cursor: pointer;
             font-size: 14px;
             margin-top: 20px;
+            transition: all 0.3s ease;
         }
 
         #closeModal:hover {
-            background-color: #0d8c6d;
+            background-color: #2980b9;
+            transform: translateY(-2px);
         }
 
         #ageInput {
             width: calc(100% - 20px);
             margin: 10px;
-            border: 1px solid #e5e5e5;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 10px;
             box-sizing: border-box;
-            font-size: 12px;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #ageInput:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
 
         .autAnswer {
             width: calc(100% - 20px);
             margin: 10px;
-            border: 1px solid #e5e5e5;
+            border: 1px solid #e0e0e0;
             border-radius: 8px;
             padding: 10px;
             box-sizing: border-box;
             resize: none;
-            font-size: 12px;
+            font-size: 14px;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .autAnswer:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
 
         #addAnswerButtonContainer {
@@ -403,10 +484,11 @@
 
         #addAnswerButtonContainer span {
             font-size: 14px;
+            color: #7f8c8d;
         }
 
         #addAnswerButton {
-            background-color: #10a37f;
+            background-color: #3498db;
             color: white;
             border: none;
             border-radius: 50%;
@@ -417,10 +499,12 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 0.3s ease;
         }
 
         #addAnswerButton:hover {
-            background-color: #0d8c6d;
+            background-color: #2980b9;
+            transform: scale(1.1);
         }
 
         #ageAttention,
@@ -455,22 +539,30 @@
             width: calc(100% - 60px);
             margin: 10px;
             background-color: #fff;
-            border: 1px solid #e5e5e5;
+            border: 1px solid #e0e0e0;
             overflow-y: auto;
             border-radius: 8px;
             user-select: none;
             flex-grow: 1;
             align-items: center;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
         .ideaContainer {
             margin-bottom: 15px;
             background-color: #f9f9f9;
             border-radius: 8px;
-            padding: 10px;
+            padding: 15px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .ideaContainer:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         .reasonarea {
@@ -478,18 +570,25 @@
             height: 80px;
             min-height: 80px;
             max-height: 80px;
-            border: 1px solid #e5e5e5;
-            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             padding: 10px;
-            font-size: 12px;
+            font-size: 14px;
             resize: none;
             overflow-y: auto;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .reasonarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
 
         .wordCount {
             margin-top: 5px;
             font-size: 12px;
-            color: #666;
+            color: #7f8c8d;
             text-align: right;
         }
 
@@ -503,10 +602,11 @@
 
         #addIdeaButtonContainer span {
             font-size: 14px;
+            color: #7f8c8d;
         }
 
         #addIdeaButton {
-            background-color: #10a37f;
+            background-color: #3498db;
             color: white;
             border: none;
             border-radius: 50%;
@@ -517,33 +617,36 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: all 0.3s ease;
         }
 
         #addIdeaButton:hover {
-            background-color: #0d8c6d;
+            background-color: #2980b9;
+            transform: scale(1.1);
         }
 
         #go2SurveyPage:disabled {
-            background-color: #cccccc;
+            background-color: #bdc3c7;
             cursor: not-allowed;
         }
 
         #addIdeaError {
-            color: #d9534f;
-            height: 10px;
-            margin-top: 0px;
-            font-size: 11px;
+            color: #e74c3c;
+            height: 20px;
+            margin-top: 5px;
+            font-size: 12px;
+            text-align: center;
         }
 
         #errorTaskContainer {
-            height: 10px;
-            margin-top: 0px;
+            height: 20px;
+            margin-top: 5px;
             overflow: hidden;
         }
 
         #errorTask {
-            color: #d9534f;
-            font-size: 11px;
+            color: #e74c3c;
+            font-size: 12px;
             line-height: 20px;
         }
 
@@ -551,12 +654,12 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
         }
 
         .radio-option {
             flex-basis: 14%;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             text-align: center;
         }
 
@@ -575,7 +678,6 @@
         #surveyPage {
             align-items: center;
             justify-content: center;
-            align-items: center;
             min-height: 100vh;
             max-height: 500px;
             background-color: white;
@@ -586,23 +688,24 @@
             margin-top: auto;
             background-color: white;
             padding: 2rem;
-            border-radius: 8px;
-            border: 2px solid #e5e5e5;
-            border-radius: 8px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
             width: 80%;
-            height: 80%;
+            height: 60%;
             overflow-y: auto;
             text-align: center;
             flex-direction: column;
             padding: 20px;
             background-color: #f9f9f9;
             font-size: 14px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         #surveyTitle {
             text-align: center;
             color: #333;
             height: auto;
+            margin-bottom: 20px;
         }
 
         #surveyButton {
@@ -621,8 +724,9 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            color: #020202;
+            color: #333;
             text-align: center;
+            font-weight: 500;
         }
 
         .form-group input,
@@ -630,11 +734,19 @@
             width: 100%;
             max-width: 300px;
             padding: 0.5rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
             font-size: 14px;
             box-sizing: border-box;
             text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
         }
 
         .form-group select {
@@ -644,14 +756,12 @@
             background-position: right 0.75rem center;
             background-size: 12px;
             padding-right: 2rem;
-            text-align-last: center;
-            font-size: 14px;
         }
 
         #errorSurvey {
             display: none;
-            color: #d9534f;
-            font-size: 12px;
+            color: #e74c3c;
+            font-size: 14px;
             margin-bottom: 1rem;
             text-align: center;
         }
@@ -661,19 +771,23 @@
             width: 100%;
             max-width: 300px;
             padding: 0.75rem;
-            background-color: #10a37f;
+            background-color: #2ecc71;
             color: white;
             border: none;
-            border-radius: 4px;
-            font-size: 1rem;
+            border-radius: 25px;
+            font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
             margin: 0 auto;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 100px;
         }
 
         #submitButton:hover {
-            background-color: #0d8c6d;
+            background-color: #27ae60;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
         }
 
         .birthday-inputs {
@@ -706,9 +820,17 @@
             display: flex;
             flex-wrap: wrap;
             margin-bottom: 20px;
-            border: 1px solid #e5e5e5;
-            padding: 10px;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
             border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .idea-rating-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         .idea-column,
@@ -727,6 +849,7 @@
 
         .idea-column h4 {
             margin-top: 0;
+            color: #3498db;
         }
 
         .rating-row {
@@ -755,12 +878,37 @@
         .rating-row input[type="range"] {
             flex: 1;
             margin: 0 10px;
+            -webkit-appearance: none;
+            width: 100%;
+            height: 5px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        .rating-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3498db;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .rating-row input[type="range"]::-webkit-slider-thumb:hover {
+            background: #2980b9;
+            transform: scale(1.1);
         }
 
         .range-value {
             flex: 0 0 20px;
             text-align: center;
             font-size: 12px;
+            font-weight: bold;
+            color: #3498db;
         }
 
         @media (max-width: 768px) {
@@ -804,32 +952,10 @@
         }
 
         #errorGPT {
-            color: #d9534f;
-            font-size: 12px;
+            color: #e74c3c;
+            font-size: 14px;
             text-align: center;
             max-width: 80%;
-        }
-
-        #go2AgePage {
-            background-color: #10a37f;
-            color: #ffffff;
-            font-weight: bold;
-            border-radius: 8px;
-            padding: 12px 30px;
-            margin-top: 10px;
-            cursor: pointer;
-            border: none;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        #go2AgePage:disabled {
-            background-color: #cccccc;
-            cursor: not-allowed;
-        }
-
-        #go2AgePage:hover:not(:disabled) {
-            background-color: #0d8c6d;
         }
     </style>
 </head>
@@ -837,23 +963,24 @@
 <body>
     <div id="welcomePage">
         <div style="max-width: 600px; text-align: center;">
-            <h1 style="font-size: 24px; margin-bottom: 20px;"><strong>Thank you for participating!</strong></h1>
-            <div style="padding: 20px; border: 2px solid #e5e5e5; border-radius: 8px; background-color: #f9f9f9;">
+            <h1 style="font-size: 28px; margin-bottom: 20px; color: #3498db;"><strong>Welcome to the
+                    Experiment!</strong></h1>
+            <div style="padding: 20px; border: 2px solid #3498db; border-radius: 12px; background-color: #f9f9f9;">
                 <ul style="list-style-type: none; padding: 0;">
                     <li style="margin-bottom: 15px; text-align: left;">✓ Ensure your computer, keyboard, and mouse are
                         in good working condition.</li>
                     <li style="margin-bottom: 15px; text-align: left;">✗ The following session will be conducted in
-                        full-screen mode. Please <span style="color: #d9534f; font-weight: bold;"> avoid
-                            exiting full-screen mode</span>,as doing so will end the session prematurely.</li>
+                        full-screen mode. Please <span style="color: #e74c3c; font-weight: bold;"> avoid
+                            exiting full-screen mode</span>, as doing so will end the session prematurely.</li>
                     <li style="margin-bottom: 15px; text-align: left;">✓ You are going to finish <span
-                            style="color: #d9534f; font-weight: bold;"> three tasks + one
+                            style="color: #e74c3c; font-weight: bold;"> three tasks + one
                             survey</span>, the expected duration will be 8-10
                         minutes.</li>
                 </ul>
             </div>
             <button id="readyButton">Getting Ready...</button>
             <div id="uniqueIndexDisplay"
-                style="position: fixed; bottom: 10px; right: 10px; color: #cccccc; font-size: 12px; display :block">
+                style="position: fixed; bottom: 10px; right: 10px; color: #bdc3c7; font-size: 12px; display :block">
             </div>
         </div>
     </div>
@@ -861,10 +988,10 @@
     <div id="gptPage">
         <div id=gptLeftside>
             <div id="chatbot">
-                <p><strong>Chatbot</strong></p>
+                <p><strong>AI Assistant</strong></p>
                 <div id="chatDisplayGptPage"></div>
                 <div id="inputContainer">
-                    <textarea id="chatbotInputGptPage" placeholder="Send a message..."></textarea>
+                    <textarea id="chatbotInputGptPage" placeholder="Type your message here..."></textarea>
                     <button id="sendGptPage">
                         <svg class="send-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
@@ -884,34 +1011,39 @@
             <div id="gptInstructions">
                 <ul style="padding: 0; padding-left: 20px; text-align: left;">
                     <li style="margin-bottom: 10px;">Generative AI is a technology that can generate text, images, or
-                        videos based on textual prompts. The chatbot shown in the left panel is a generative AI product.
+                        videos based on textual prompts. The AI Assistant shown in the left panel is a generative AI
+                        product.
                     </li>
                     <li style="margin-bottom: 10px;"> You can pose questions to facilitate the process of ideation. To
-                        get the most out of chatbot, providing clear, detailed, and contextually rich prompts is key.
+                        get the most out of the AI Assistant, providing clear, detailed, and contextually rich prompts
+                        is key.
                         <ul style="list-style-type: circle; margin-top: 10px;">
-                            <li style="margin-bottom: 10px;">Please click <svg class="send-icon" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    style="width: 16px; height: 16px; vertical-align: middle;">
+                            <li style="margin-bottom: 10px;">Click
+                                <svg class="send-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    style="width: 16px; height: 16px; vertical-align: middle; fill: currentColor;">
                                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
-                                </svg> if you want the chatbot to generate textual responses.</li>
-                            <li style="margin-bottom: 10px;">Please click <svg class="image-icon" viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    style="width: 16px; height: 16px; vertical-align: middle;">
+                                </svg>
+                                if you want the AI Assistant to generate textual responses.
+                            </li>
+                            <li style="margin-bottom: 10px;">Click
+                                <svg class="image-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"
+                                    style="width: 16px; height: 16px; vertical-align: middle; fill: currentColor;">
                                     <path
                                         d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z">
                                     </path>
-                                </svg> if you want the chatbot to generate images. </li>
-
+                                </svg>
+                                if you want the AI Assistant to generate images.
+                            </li>
                             <li style="margin-bottom: 10px;">Please wait for 8-10 seconds for
                                 responses.</li>
                         </ul>
                     </li>
                     <li style="margin-bottom: 10px;"><span
-                            style="margin-bottom: 10px;  background-color: #F7CE5D; color: #000000; font-weight: bold; padding: 2px 5px; border-radius: 3px; font-size: 1.2em;">SUBTASK
-                            1:</span> To help you familiarize this
+                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">SUBTASK
+                            1:</span> To help you familiarize yourself with this
                         tool, you are required to send at least <span
-                            style="margin-bottom: 10px; color: #d9534f;font-weight: bold;"> one message for a textual
-                            response and one message for a image response </span> to the chatbot.
+                            style="margin-bottom: 10px; color: #e74c3c;font-weight: bold;"> one message for a textual
+                            response and one message for an image response </span> to the AI Assistant.
                         Please let it help you finish the task below.
                     </li>
                 </ul>
@@ -919,18 +1051,18 @@
             <div id="gptTask">
                 <ul style="padding: 0; padding-left: 20px; text-align: left;">
                     <li style="margin-bottom: 10px;"> <span
-                            style="margin-bottom: 10px; background-color: #F7CE5D; color: #000000; font-weight: bold; padding: 2px 5px; border-radius: 3px; font-size: 1.2em;">SUBTASK
-                            2:</span> Please design <span style="color: #d9534f; font-weight: bold;"> a
+                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">SUBTASK
+                            2:</span> Please design <span style="color: #e74c3c; font-weight: bold;"> a
                             daily necessity by combining these two concepts: spoon and fork</span>.
                     </li>
                     <li style="margin-bottom: 10px;"> Please give a description for
                         your idea with at least 20 words.</li>
                 </ul>
-                <textarea id="reasonAreaGPT" placeholder="Enter your idea here..."></textarea>
+                <textarea id="reasonAreaGPT" placeholder="Enter a idea here..."></textarea>
                 <div id="wordCountGPT" class="word-count">Word Count: 0</div>
             </div>
             <div id="errorContainer" style="height: 40px; margin-top: 10px;">
-                <span id="errorGPT" style="color: #d9534f; display: none; font-size: 12px;"></span>
+                <span id="errorGPT" style="color: #e74c3c; display: none; font-size: 14px;"></span>
             </div>
             <button id="go2AgePage" disabled>Next</button>
         </div>
@@ -938,18 +1070,19 @@
 
     <div id="agePage">
         <div style="max-width: 600px; text-align: center;">
-            <h1 style="font-size: 24px; margin-bottom: 20px;"><strong>Upcoming: Alternative Uses Test</strong></h1>
-            <div style="padding: 20px; border: 2px solid #e5e5e5; border-radius: 8px; background-color: #f9f9f9;">
+            <h1 style="font-size: 24px; margin-bottom: 20px; color: #3498db;"><strong>Upcoming: Alternative Uses
+                    Test</strong></h1>
+            <div style="padding: 20px; border: 2px solid #3498db; border-radius: 12px; background-color: #f9f9f9;">
                 <p style="margin-bottom: 20px;">Before we proceed, please provide your age.</p>
                 <input type="number" id="ageInput" placeholder="Age" min="1" max="120"
-                    style="font-size: 16px; width: 100px; text-align: center; margin: 0 auto 20px; display: block; padding: 10px; border: 1px solid #e5e5e5; border-radius: 4px;">
+                    style="font-size: 16px; width: 100px; text-align: center; margin: 0 auto 20px; display: block; padding: 10px; border: 1px solid #3498db; border-radius: 8px;">
                 <p style="margin-bottom: 15px; text-align: left;">✓ In the next page, you will complete a test by
-                    <span style="color: #d9534f; font-weight: bold;"> listing novel uses for a paper clip</span> in 30
+                    <span style="color: #e74c3c; font-weight: bold;"> listing novel uses for a paper clip</span> in 30
                     seconds.
                 </p>
-                <p style="margin-bottom: 15px; text-align: left;">✓ The countdown will <span
-                        style="color: #d9534f; font-weight: bold;">start immediately</span> after you press
-                    the "I'm Ready" button. Please ensure you're prepared before clicking the button.</p>
+                <p style="margin-bottom: 15px; text-align: left;">! The countdown will <span
+                        style="color: #e74c3c; font-weight: bold;">start immediately</span> after you press
+                    the "I am ready" button.</p>
             </div>
             <button id="autButton" disabled style="margin-top: 20px;">Getting Ready...</button>
         </div>
@@ -957,14 +1090,19 @@
 
     <div id="autPage">
         <div id="aut-container">
-            <div id="autCountdown" style="text-align:center; font-size:20px; margin-top:10px; font-weight: bold;">Time
-                left: 30:00</div>
+            <div id="autCountdown"
+                style="text-align:center; font-size:24px; margin-top:10px; font-weight: bold; color: #3498db;">Time
+                left: 00:30</div>
             <div id="autTask">
-                <p><span
-                        style="margin-bottom: 10px; background-color: #F7CE5D; color: #000000; font-weight: bold; padding: 2px 5px; border-radius: 3px; font-size: 1.2em;">TASK:</span>Please
-                    list novel uses for <span style="color: #d9534f; font-weight: bold;"> a paper clip</span> as many as
-                    possible in 30
-                    seconds.</p>
+                <p>
+                    <li style="margin-bottom: 10px;"> <span
+                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">TASK:</span>
+                        Please
+                        list novel uses for <span style="color: #e74c3c; font-weight: bold;"> a paper clip</span> as
+                        many as
+                        possible in 30
+                        seconds.
+                </p>
                 <div id="autAnswers">
                     <textarea class="autAnswer" placeholder="Enter a novel use for a paper clip"></textarea>
                 </div>
@@ -978,18 +1116,19 @@
 
     <div id="beforeTaskPage">
         <div style="max-width: 700px; text-align: center;">
-            <h1 style="font-size: 24px; margin-bottom: 20px;"><strong>Upcoming: Creative Ideation Task</strong></h1>
-            <div style="padding: 20px; border: 2px solid #e5e5e5; border-radius: 8px; background-color: #f9f9f9;">
+            <h1 style="font-size: 24px; margin-bottom: 20px; color: #3498db;"><strong>Upcoming: Creative Ideation
+                    Task</strong></h1>
+            <div style="padding: 20px; border: 2px solid #3498db; border-radius: 12px; background-color: #f9f9f9;">
                 <ul style="list-style-type: none; padding: 0;">
                     <li style="margin-bottom: 15px; text-align: left;"><span
-                            style="color: #d9534f; font-weight: bold;">✓ Unlimited Time:</span> You have unlimited time
+                            style="color: #e74c3c; font-weight: bold;">✓ Unlimited Time:</span> You have unlimited time
                         to complete this task. The minimum time required for this task is five minutes.</li>
                     <li style="margin-bottom: 15px; text-align: left;"><span
-                            style="color: #d9534f; font-weight: bold;">✓ At Least Three Ideas:</span> Please generate a
+                            style="color: #e74c3c; font-weight: bold;">✓ At Least Three Ideas:</span> Please generate a
                         minimum of three ideas. Feel free to be as creative as possible and submit your answers once you
                         are satisfied. </li>
                     <li style="margin-bottom: 15px; text-align: left;"><span
-                            style="color: #d9534f; font-weight: bold;">✓ Payment:</span> Complete the tasks to receive a
+                            style="color: #e74c3c; font-weight: bold;">✓ Payment:</span> Complete the tasks to receive a
                         base compensation of $5. If any of your ideas rank in the top 20% for novelty, as rated by
                         external evaluators, you will earn an additional $3 bonus.</li>
                     <!-- The "No Generative AI Tools" list item will be dynamically added or removed here -->
@@ -1002,10 +1141,10 @@
     <div id="taskPage">
         <div id="taskLeftside">
             <div id="chatbot">
-                <p><strong>Chatbot</strong></p>
+                <p><strong>AI Assistant</strong></p>
                 <div id="chatDisplayTask"></div>
                 <div id="inputContainer">
-                    <textarea id="chatbotInputTask" placeholder="Send a message..."></textarea>
+                    <textarea id="chatbotInputTask" placeholder="Type your message here..."></textarea>
                     <button id="sendTask">
                         <svg class="send-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
@@ -1028,15 +1167,15 @@
             <div id="ideasContainer">
                 <div id="ideaInputs">
                     <div class="ideaContainer">
-                        <textarea class="reasonarea" placeholder="Enter your idea here..."></textarea>
+                        <textarea class="reasonarea" placeholder="Enter a idea here..."></textarea>
                         <div class="wordCount">Word Count: 0</div>
                     </div>
                     <div class="ideaContainer">
-                        <textarea class="reasonarea" placeholder="Enter your description here..."></textarea>
+                        <textarea class="reasonarea" placeholder="Enter a idea here..."></textarea>
                         <div class="wordCount">Word Count: 0</div>
                     </div>
                     <div class="ideaContainer">
-                        <textarea class="reasonarea" placeholder="Enter your description here..."></textarea>
+                        <textarea class="reasonarea" placeholder="Enter a idea here..."></textarea>
                         <div class="wordCount">Word Count: 0</div>
                     </div>
                 </div>
@@ -1047,7 +1186,7 @@
             </div>
             <div id="addIdeaError"></div>
             <div id="errorTaskContainer" style="height: 20px; margin-top: 10px;">
-                <span id="errorTask" style="color: #d9534f; display: none; font-size: 11px;">Please submit at least
+                <span id="errorTask" style="color: #e74c3c; display: none; font-size: 12px;">Please submit at least
                     three ideas with at least 20 words for each idea.</span>
             </div>
             <button id="go2SurveyPage" disabled>Submit</button>
@@ -1056,13 +1195,13 @@
 
     <div id="surveyPage">
         <div id="surveyTitle">
-            <h2>Survey</h2>
+            <h2 style="color: #3498db;">Survey</h2>
         </div>
         <form id="surveyForm">
-            <div id="surveyErrors" style="color: #d9534f; margin-bottom: 10px;"></div>
+            <div id="surveyErrors" style="color: #e74c3c; margin-bottom: 10px;"></div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="text" id="email" name="email" placeholder="Email" required>
+                <input type="text" id="email" name="email" placeholder="Enter your email" required>
             </div>
 
             <div class="form-group">
@@ -1281,7 +1420,8 @@
                     <option value="2">2 (Slightly confident)</option>
                     <option value="3">3 (Somewhat confident)</option>
                     <option value="4">4 (Moderately confident)</option>
-                    <option value="5">5 (Very confident)</option <option value="6">6 (Highly confident)</option>
+                    <option value="5">5 (Very confident)</option>
+                    <option value="6">6 (Highly confident)</option>
                     <option value="7">7 (Extremely confident)</option>
                 </select>
             </div>
@@ -1309,7 +1449,7 @@
             </div>
 
         </form>
-        <div id="errorSurvey" style="color: #d9534f; margin-top: 10px; display: none;"></div>
+        <div id="errorSurvey" style="color: #e74c3c; margin-top: 10px; display: none;"></div>
         <div id="surveyButton">
             <button type="submit" id="submitButton">Submit</button>
         </div>
@@ -1317,16 +1457,17 @@
 
     <div id="endPage">
         <div style="max-width: 700px; text-align: center; margin: auto; margin-top: 200px">
-            <strong>This is the end of the experiment! <br>
-                <br>
-                Thanks! </strong>
+            <h2 style="color: #3498db; margin-bottom: 20px;">Experiment Completed!</h2>
+            <p style="font-size: 18px; color: #2c3e50;">Thank you for your participation in this study.</p>
+            <p style="font-size: 16px; color: #7f8c8d; margin-top: 20px;">Your contributions are valuable to our
+                research.</p>
         </div>
     </div>
 
     <div id="modal"
-        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 0, 0, 0.5); justify-content:center; align-items:center; color:#d9534f; font-size:16px;">
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0, 0, 0, 0.5); justify-content:center; align-items:center; color:#e74c3c; font-size:16px;">
         <div
-            style="background:#fff; padding:20px; border-radius:8px; border: 1px solid #e5e5e5; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 80%; min-width: 300px;">
+            style="background:#fff; padding:20px; border-radius:12px; border: 1px solid #3498db; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; max-width: 80%; min-width: 300px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
             <p style="margin-bottom: 20px;">Time is up! Moving to the next page. Your answers have been saved.</p>
             <button id="closeModal" style="margin-top:10px;">OK</button>
         </div>
@@ -1503,8 +1644,9 @@
             const wordCountGPT = document.getElementById('wordCountGPT');
             const chatDisplayGptPage = document.getElementById('chatDisplayGptPage');
 
-            let textMessageSent = false;
-            let imageMessageSent = false;
+            // LATER
+            let textMessageSent = true;
+            let imageMessageSent = true;
 
             function getWordCount(text) {
                 text = text.trim();
@@ -1645,7 +1787,6 @@
 
                 const messageData = { type: sender, content: message, timestamp: new Date().toISOString() };
 
-                // Store messages in the correct page
                 if (pageId === 'gptPage') {
                     experimentData.gptPage.messages.push(messageData);
                 } else if (pageId === 'taskPage') {
@@ -1753,28 +1894,25 @@
                 const taskRightside = document.getElementById('taskRightside');
                 const beforeTaskInstructions = document.querySelector('#beforeTaskPage ul');
 
-                const existingNoAIToolsLi = beforeTaskInstructions.querySelector('li:last-child');
-                if (existingNoAIToolsLi && existingNoAIToolsLi.textContent.includes('No Generative AI Tools')) {
-                    existingNoAIToolsLi.remove();
+                const existingLastLi = beforeTaskInstructions.querySelector('li:last-child');
+                if (existingLastLi && (existingLastLi.textContent.includes('No Generative AI Tools') || existingLastLi.textContent.includes('Use AI Assistant'))) {
+                    existingLastLi.remove();
                 }
 
-                if (aiOrHm === 'HM') {
-                    const newLi = document.createElement('li');
-                    newLi.style.marginBottom = '15px';
-                    newLi.style.textAlign = 'left';
-                    newLi.innerHTML = `<span style="color: #d9534f; font-weight: bold;">✗ No Generative AI Tools:</span> You must not use
-        any generative AI tools, such as ChatGPT, to complete this task. Your work will be subjected to
-        AI detection. If AI usage is detected, you will not receive payment.`;
-                    beforeTaskInstructions.appendChild(newLi);
-                }
+                const newLi = document.createElement('li');
+                newLi.style.marginBottom = '15px';
+                newLi.style.textAlign = 'left';
 
                 if (aiOrHm === 'HM') {
+                    newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">! No Generative AI Tools:</span> You MUST NOT use
+any generative AI tools, such as ChatGPT, to complete this task. Your work will be subjected to
+AI detection. If AI usage is detected, you will NOT receive payment.`;
                     taskChatbot.style.display = 'none';
-                    taskRightside.style.margin = '0 auto';
                 } else {
+                    newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">! Use AI Assistant:</span> You MUST use the AI Assistant to help you finish the ideation task. Please COMBINE your creativity with AI creativity. If you do not use the AI Assistant, you will NOT receive payment.`;
                     taskChatbot.style.display = 'flex';
-                    taskRightside.style.margin = '';
                 }
+                beforeTaskInstructions.appendChild(newLi);
 
                 const speedComparisonQuestion = document.querySelector('label[for="gpt_speed_comparison"]');
                 const noveltyComparisonQuestion = document.querySelector('label[for="gpt_novelty_comparison"]');
@@ -1811,17 +1949,19 @@
                 const taskInstructions = document.getElementById('taskInstructions');
                 taskInstructions.innerHTML = `
     <div style="line-height: 1.6; font-size: 16px;">
-        <span style="display: inline-block; margin-bottom: 15px; background-color: #F7CE5D; color: #000000; font-weight: bold; padding: 2px 5px; border-radius: 3px; font-size: 1.2em;">TASK:</span>
-            Please design a toy, anything a child (age 5–11) can use to play with, by combining these two concepts:
-            <span style="color: #d9534f; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">${word1}</span> and 
-            <span style="color: #d9534f; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">${word2}</span>. 
-        <p style="margin-bottom: 15px;">
-            The design goal is to 
-            <span style="color: #d9534f; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">${goal}</span>.
-        </p>
+        <span style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">TASK:</span>
+            Please design <span style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">a toy</span>, anything a child (age 5–11) can use to play with, by combining these two concepts:
+            <span style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">${word1}</span> and 
+            <span style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">${word2}</span>.
+            The design goal is to
+            <span style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">${goal}</span>.
         <ul style="padding-left: 20px; margin-top: 20px;">
             <li style="margin-bottom: 10px;">Your ideation should disregard production cost.</li>
             <li style="margin-bottom: 10px;">Submit at least three ideas and give a description for each idea with at least 20 words.</li>
+            <li style="margin-bottom: 10px;">${aiOrHm === 'HM'
+                        ? '<span style="color: #e74c3c; font-weight: bold;">You MUST NOT use any generative AI tools, such as ChatGPT, to complete this task. Your work will be subjected to AI detection. If AI usage is detected, you will NOT receive payment.</span>'
+                        : '<span style="color: #e74c3c; font-weight: bold;">You MUST use the AI Assistant to help you finish the ideation task. Please COMBINE your creativity with AI creativity. If you do not use the AI Assistant, you will NOT receive payment.</span>'}
+            </li>
         </ul>
     </div>
 `;
@@ -1853,7 +1993,7 @@
                         startAutButtonCountdown();
                         break;
                     case 'autPage':
-                        startCountdown(30, 'autCountdown');
+                        startCountdown(5, 'autCountdown'); // LATER
                         break;
                     case 'beforeTaskPage':
                         startTaskButtonCountdown();
@@ -2025,7 +2165,7 @@
                 const newIdeaContainer = document.createElement('div');
                 newIdeaContainer.className = 'ideaContainer';
                 newIdeaContainer.innerHTML = `
-<textarea class="reasonarea" placeholder="Enter your description here..."></textarea>
+<textarea class="reasonarea" placeholder="Enter a idea here..."></textarea>
 <div class="wordCount">Word Count: 0</div>
 `;
                 ideaInputs.appendChild(newIdeaContainer);
@@ -2067,7 +2207,7 @@
             }
 
             function startTaskTimer() {
-                let timeLeft = 300; // 5 minutes in seconds
+                let timeLeft = 5; // LATER
                 go2SurveyPage.disabled = true;
 
                 timer = setInterval(() => {

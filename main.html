@@ -1575,7 +1575,7 @@
                 return false;
             }, false);
 
-            let countdownTimeReadyButton = 0.1;
+            let countdownTimeReadyButton = 10;
             const readyButton = document.getElementById('readyButton');
             readyButton.innerText = 'Ready in ' + countdownTimeReadyButton;
             readyButton.disabled = true;
@@ -1596,7 +1596,7 @@
                 transitionToPage('gptPage');
             });
 
-            let countdownTimeAutButton = 0.1;
+            let countdownTimeAutButton = 10;
             const autButton = document.getElementById('autButton');
 
             function startAutButtonCountdown() {
@@ -1617,7 +1617,7 @@
                 transitionToPage('autPage');
             });
 
-            let countdownTimeTaskButton = 0.1;
+            let countdownTimeTaskButton = 20;
             const taskButton = document.getElementById('taskButton');
 
             function startTaskButtonCountdown() {
@@ -1645,8 +1645,8 @@
             const chatDisplayGptPage = document.getElementById('chatDisplayGptPage');
 
             // LATER
-            let textMessageSent = true;
-            let imageMessageSent = true;
+            let textMessageSent = false;
+            let imageMessageSent = false;
 
             function getWordCount(text) {
                 text = text.trim();
@@ -1993,7 +1993,7 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
                         startAutButtonCountdown();
                         break;
                     case 'autPage':
-                        startCountdown(5, 'autCountdown'); // LATER
+                        startCountdown(30, 'autCountdown'); // LATER
                         break;
                     case 'beforeTaskPage':
                         startTaskButtonCountdown();
@@ -2207,7 +2207,7 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
             }
 
             function startTaskTimer() {
-                let timeLeft = 5; // LATER
+                let timeLeft = 300; // LATER
                 go2SurveyPage.disabled = true;
 
                 timer = setInterval(() => {

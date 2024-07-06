@@ -1391,13 +1391,13 @@
                     would have taken without generative AI tools?</label>
                 <select id="gpt_speed_comparison" name="gpt_speed_comparison" required>
                     <option value="">Select your answer</option>
-                    <option value="1">1 (Much slower)</option>
-                    <option value="2">2 (Slower)</option>
-                    <option value="3">3 (Slightly slower)</option>
-                    <option value="4">4 (About the same speed)</option>
-                    <option value="5">5 (Faster)</option>
-                    <option value="6">6 (Much faster)</option>
-                    <option value="7">7 (Extremely faster)</option>
+                    <option value="1">1 - Much slower</option>
+                    <option value="2">2 - Slower</option>
+                    <option value="3">3 - Slightly slower</option>
+                    <option value="4">4 - About the same speed</option>
+                    <option value="5">5 - Faster</option>
+                    <option value="6">6 - Much faster</option>
+                    <option value="7">7 - Extremely faster</option>
                 </select>
             </div>
 
@@ -1406,13 +1406,13 @@
                     compared to how this task would have been without generative AI tools?</label>
                 <select id="gpt_novelty_comparison" name="gpt_novelty_comparison" required>
                     <option value="">Select your answer</option>
-                    <option value="1">1 (Much less novel)</option>
-                    <option value="2">2 (Less novel)</option>
-                    <option value="3">3 (Slightly less novel)</option>
-                    <option value="4">4 (About the same novelty)</option>
-                    <option value="5">5 (More novel)</option>
-                    <option value="6">6 (Much more novel)</option>
-                    <option value="7">7 (Extremely more novel)</option>
+                    <option value="1">1 - Much less novel</option>
+                    <option value="2">2 - Less novel</option>
+                    <option value="3">3 - Slightly less novel</option>
+                    <option value="4">4 - About the same novelty</option>
+                    <option value="5">5 - More novel</option>
+                    <option value="6">6 - Much more novel</option>
+                    <option value="7">7 - Extremely more novel</option>
                 </select>
             </div>
 
@@ -1421,13 +1421,13 @@
                     the problem creatively?</label>
                 <select id="creative_confidence" name="creative_confidence" required>
                     <option value="">Select your confidence level</option>
-                    <option value="1">1 (Not at all confident)</option>
-                    <option value="2">2 (Slightly confident)</option>
-                    <option value="3">3 (Somewhat confident)</option>
-                    <option value="4">4 (Moderately confident)</option>
-                    <option value="5">5 (Very confident)</option>
-                    <option value="6">6 (Highly confident)</option>
-                    <option value="7">7 (Extremely confident)</option>
+                    <option value="1">1 - Not at all confident</option>
+                    <option value="2">2 - Slightly confident</option>
+                    <option value="3">3 - Somewhat confident</option>
+                    <option value="4">4 - Moderately confident</option>
+                    <option value="5">5 - Very confident</option>
+                    <option value="6">6 - Highly confident</option>
+                    <option value="7">7 - Extremely confident</option>
                 </select>
             </div>
 
@@ -1436,13 +1436,13 @@
                     experiment?</label>
                 <select id="genai_future_use" name="genai_future_use" required>
                     <option value="">Select your likelihood</option>
-                    <option value="1">1 (Extremely unlikely)</option>
-                    <option value="2">2 (Very unlikely)</option>
-                    <option value="3">3 (Somewhat unlikely)</option>
-                    <option value="4">4 (Neither likely nor unlikely)</option>
-                    <option value="5">5 (Somewhat likely)</option>
-                    <option value="6">6 (Very likely)</option>
-                    <option value="7">7 (Extremely likely)</option>
+                    <option value="1">1 - Extremely unlikely</option>
+                    <option value="2">2 - Very unlikely</option>
+                    <option value="3">3 - Somewhat unlikely</option>
+                    <option value="4">4 - Neither likely nor unlikely</option>
+                    <option value="5">5 - Somewhat likely</option>
+                    <option value="6">6 - Very likely</option>
+                    <option value="7">7 - Extremely likely</option>
                 </select>
             </div>
 
@@ -1461,11 +1461,9 @@
     </div>
 
     <div id="endPage">
-        <div style="max-width: 700px; text-align: center; margin: auto; margin-top: 200px">
+        <div style="max-width: 700px; text-align: center; margin: auto">
             <h2 style="color: #3498db; margin-bottom: 20px;">Experiment Completed!</h2>
             <p style="font-size: 18px; color: #2c3e50;">Thank you for your participation in this study.</p>
-            <p style="font-size: 16px; color: #7f8c8d; margin-top: 20px;">Your contributions are valuable to our
-                research.</p>
         </div>
     </div>
 
@@ -1580,7 +1578,7 @@
                 return false;
             }, false);
 
-            let countdownTimeReadyButton = 10;
+            let countdownTimeReadyButton = 10; // LATER
             const readyButton = document.getElementById('readyButton');
             readyButton.innerText = 'Ready in ' + countdownTimeReadyButton;
             readyButton.disabled = true;
@@ -1601,7 +1599,7 @@
                 transitionToPage('gptPage');
             });
 
-            let countdownTimeAutButton = 10;
+            let countdownTimeAutButton = 10; // LATER
             const autButton = document.getElementById('autButton');
 
             function startAutButtonCountdown() {
@@ -1622,7 +1620,7 @@
                 transitionToPage('autPage');
             });
 
-            let countdownTimeTaskButton = 20;
+            let countdownTimeTaskButton = 20; // LATER
             const taskButton = document.getElementById('taskButton');
 
             function startTaskButtonCountdown() {

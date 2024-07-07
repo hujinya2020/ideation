@@ -959,6 +959,26 @@
             text-align: center;
             max-width: 80%;
         }
+
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style>
 </head>
 
@@ -1086,8 +1106,8 @@
                 <input type="number" id="ageInput" placeholder="Age" min="1" max="120"
                     style="font-size: 16px; width: 100px; text-align: center; margin: 0 auto 20px; display: block; padding: 10px; border: 1px solid #3498db; border-radius: 8px;">
                 <p style="margin-bottom: 15px; text-align: left;">✓ In the next page, you will complete a test by
-                    <span style="color: #e74c3c; font-weight: bold;"> listing novel uses for a paper clip</span> in 30
-                    seconds.
+                    <span style="color: #e74c3c; font-weight: bold;"> listing novel uses for a paper clip</span> in
+                    <span style="color: #e74c3c; font-weight: bold;"> 2 minutes</span>.
                 </p>
                 <p style="margin-bottom: 15px; text-align: left;">! The countdown will <span
                         style="color: #e74c3c; font-weight: bold;">start immediately</span> after you press
@@ -1101,7 +1121,7 @@
         <div id="aut-container">
             <div id="autCountdown"
                 style="text-align:center; font-size:24px; margin-top:10px; font-weight: bold; color: #3498db;">Time
-                left: 00:30</div>
+                left: 02:00</div>
             <div id="autTask">
                 <p>
                     <li style="margin-bottom: 10px;"> <span
@@ -1109,8 +1129,7 @@
                         Please
                         list novel uses for <span style="color: #e74c3c; font-weight: bold;"> a paper clip</span> as
                         many as
-                        possible in 30
-                        seconds.
+                        possible in <span style="color: #e74c3c; font-weight: bold;">2 minutes</span>.
                 </p>
                 <div id="autAnswers">
                     <textarea class="autAnswer" placeholder="Enter a novel use for a paper clip"></textarea>
@@ -1301,6 +1320,20 @@
                     <input type="text" id="recall-word1" name="recall-word1" placeholder="Word 1" required>
                     <input type="text" id="recall-word2" name="recall-word2" placeholder="Word 2" required>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label for="creative_selfbelief">In general, how creative do you consider yourself?</label>
+                <select id="creative_selfbelief" name="creative_selfbelief" required>
+                    <option value="">Select your creativity level</option>
+                    <option value="1">1 - Not at all creative</option>
+                    <option value="2">2 - Slightly creative</option>
+                    <option value="3">3 - Somewhat creative</option>
+                    <option value="4">4 - Moderately creative</option>
+                    <option value="5">5 - Very creative</option>
+                    <option value="6">6 - Highly creative</option>
+                    <option value="7">7 - Extremely creative</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -1802,6 +1835,9 @@
                     img.src = message;
                     img.alt = 'Generated image';
                     messageElement.appendChild(img);
+                } else if (message instanceof HTMLElement) {
+                    // This allows us to append the loader directly
+                    messageElement.appendChild(message);
                 } else {
                     messageElement.textContent = message;
                 }
@@ -1824,6 +1860,15 @@
 
             async function callOpenAIAPIForPage(userMessage, chatDisplay, pageId) {
                 try {
+                    // Create and display loading animation
+                    const loaderElement = document.createElement('div');
+                    loaderElement.classList.add('loader');
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('message', 'bot');
+                    messageElement.appendChild(loaderElement);
+                    chatDisplay.appendChild(messageElement);
+                    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+
                     const apiKeySnapshot = await database.ref('apiKeys/openai').once('value');
                     const apiKey = apiKeySnapshot.val();
 
@@ -1864,15 +1909,35 @@
                     // Update the experimentData
                     experimentData[pageId].conversationHistory = conversationHistory;
 
+                    // Remove loading animation
+                    chatDisplay.removeChild(messageElement);
+
+                    // Display the bot's response
                     displayMessage(botResponse, 'bot', chatDisplay, pageId);
                 } catch (error) {
                     console.error("Error calling the OpenAI API:", error);
+
+                    // Remove loading animation in case of error
+                    const loaderElement = chatDisplay.querySelector('.loader');
+                    if (loaderElement) {
+                        chatDisplay.removeChild(loaderElement.parentElement);
+                    }
+
                     displayMessage("Failed to get a response from the AI.", 'bot', chatDisplay, pageId);
                 }
             }
 
             async function callDALLE3API(userMessage, chatDisplay, pageId) {
                 try {
+                    // Create and display loading animation
+                    const loaderElement = document.createElement('div');
+                    loaderElement.classList.add('loader');
+                    const messageElement = document.createElement('div');
+                    messageElement.classList.add('message', 'bot');
+                    messageElement.appendChild(loaderElement);
+                    chatDisplay.appendChild(messageElement);
+                    chatDisplay.scrollTop = chatDisplay.scrollHeight;
+
                     const apiKeySnapshot = await database.ref('apiKeys/openai').once('value');
                     const apiKey = apiKeySnapshot.val();
 
@@ -1898,10 +1963,22 @@
                     const data = await response.json();
                     const imageData = data.data[0].b64_json;
                     const imageUrl = `data:image/png;base64,${imageData}`;
+
+                    // Remove loading animation
+                    chatDisplay.removeChild(messageElement);
+
+                    // Display the generated image
                     displayMessage(imageUrl, 'bot', chatDisplay, pageId);
 
                 } catch (error) {
                     console.error("Error calling the DALL-E 3 API:", error);
+
+                    // Remove loading animation in case of error
+                    const loaderElement = chatDisplay.querySelector('.loader');
+                    if (loaderElement) {
+                        chatDisplay.removeChild(loaderElement.parentElement);
+                    }
+
                     displayMessage("Failed to generate an image.", 'bot', chatDisplay, pageId);
                 }
             }
@@ -2039,7 +2116,7 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
                         startAutButtonCountdown();
                         break;
                     case 'autPage':
-                        startCountdown(30, 'autCountdown'); // LATER
+                        startCountdown(120, 'autCountdown'); // LATER
                         break;
                     case 'beforeTaskPage':
                         startTaskButtonCountdown();

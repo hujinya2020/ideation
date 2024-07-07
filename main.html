@@ -1463,7 +1463,10 @@
     <div id="endPage">
         <div style="max-width: 700px; text-align: center; margin: auto">
             <h2 style="color: #3498db; margin-bottom: 20px;">Experiment Completed!</h2>
-            <p style="font-size: 18px; color: #2c3e50;">Thank you for your participation in this study.</p>
+            <p style="font-size: 18px; color: #e74c3c; margin-top: 20px;">
+                Please keep this unique index for your payment confirmation:
+                <span id="endPageUniqueIndex" style="font-weight: bold;"></span>
+            </p>
         </div>
     </div>
 
@@ -2010,6 +2013,9 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
                     case 'surveyPage':
                         setContentBasedOnCondition();
                         addIdeaRatings();
+                        break;
+                    case 'endPage':
+                        document.getElementById('endPageUniqueIndex').textContent = experimentData.uniqueIndex;
                         break;
                 }
             }

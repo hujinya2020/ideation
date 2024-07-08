@@ -1011,6 +1011,14 @@
         </div>
     </div>
 
+    <div id="loadingPage"
+        style="display: none; flex-direction: column; justify-content: center; align-items: center; height: 100vh;">
+        <div class="loader"
+            style="border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite;">
+        </div>
+        <p style="margin-top: 20px; font-size: 18px;">Loading the page...</p>
+    </div>
+
     <div id="agePage">
         <div style="max-width: 600px; text-align: center;">
             <h1 style="font-size: 24px; margin-bottom: 20px; color: #3498db;"><strong>Upcoming: Alternative Uses
@@ -1580,16 +1588,7 @@
         document.addEventListener('DOMContentLoaded', async (event) => {
             let currentPage = 'welcomePage';
 
-            const receivedID = await updateAndGetReceivedID();
-            const conditionID = determineConditionID(receivedID);
-            console.log('Condition ID:', conditionID);
-
             addUniqueIndexDisplay();
-            const uniqueIndex = generateUniqueIndex(conditionID);
-            experimentData.uniqueIndex = uniqueIndex;
-            document.querySelectorAll('[id^="uniqueIndexDisplay-"]').forEach(display => {
-                display.textContent = uniqueIndex;
-            });
 
             function sendToFirebase(data) {
                 const uniqueID = data.uniqueIndex;
@@ -1653,11 +1652,35 @@
                 }
             }, 1000);
 
-            readyButton.addEventListener('click', function () {
-                document.documentElement.requestFullscreen().catch((err) => {
-                    console.warn("Error trying to enter full-screen mode:", err.message);
-                });
-                transitionToPage('agePage'); // LATER
+            readyButton.addEventListener('click', async function () {
+                try {
+                    document.documentElement.requestFullscreen().catch((err) => {
+                        console.warn("Error trying to enter full-screen mode:", err.message);
+                    });
+
+                    // Show loading page
+                    transitionToPage('loadingPage');
+
+                    // Update receivedID and determine conditionID when the button is clicked
+                    const receivedID = await updateAndGetReceivedID();
+                    const conditionID = determineConditionID(receivedID);
+                    console.log('Condition ID:', conditionID);
+
+                    // Generate unique index
+                    const uniqueIndex = generateUniqueIndex(conditionID, receivedID);
+                    experimentData.uniqueIndex = uniqueIndex;
+                    document.querySelectorAll('[id^="uniqueIndexDisplay-"]').forEach(display => {
+                        display.textContent = uniqueIndex;
+                    });
+
+                    // Wait for 2 seconds
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+
+                    // Transition to agePage
+                    transitionToPage('agePage');
+                } catch (error) {
+                    console.error("Error in readyButton click handler:", error);
+                }
             });
 
             let countdownTimeAutButton = 10; // LATER
@@ -1873,7 +1896,6 @@
 
             async function callOpenAIAPIForPage(userMessage, chatDisplay, pageId) {
                 try {
-                    // Create and display loading animation
                     const loaderElement = document.createElement('div');
                     loaderElement.classList.add('loader');
                     const messageElement = document.createElement('div');
@@ -1885,13 +1907,9 @@
                     const apiKeySnapshot = await database.ref('apiKeys/openai').once('value');
                     const apiKey = apiKeySnapshot.val();
 
-                    // Get the conversation history for the current page
                     const conversationHistory = experimentData[pageId].conversationHistory;
-
-                    // Add the new user message to the conversation history
                     conversationHistory.push({ role: "user", content: userMessage });
 
-                    // Prepare the messages array for the API call
                     const messages = [
                         { role: "system", content: "You are a creative assistant to help users design products. Please reply all questions with 100 words. For every idea you provided, please give detailed reasons for that." },
                         ...conversationHistory
@@ -1915,22 +1933,13 @@
 
                     const data = await response.json();
                     const botResponse = data.choices[0].message.content.trim();
-
-                    // Add the bot's response to the conversation history
                     conversationHistory.push({ role: "assistant", content: botResponse });
-
-                    // Update the experimentData
                     experimentData[pageId].conversationHistory = conversationHistory;
-
-                    // Remove loading animation
                     chatDisplay.removeChild(messageElement);
 
-                    // Display the bot's response
                     displayMessage(botResponse, 'bot', chatDisplay, pageId);
                 } catch (error) {
                     console.error("Error calling the OpenAI API:", error);
-
-                    // Remove loading animation in case of error
                     const loaderElement = chatDisplay.querySelector('.loader');
                     if (loaderElement) {
                         chatDisplay.removeChild(loaderElement.parentElement);
@@ -2096,6 +2105,7 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
     </div>
 `;
             }
+
             function transitionToPage(pageName) {
                 if (countdownIntervals[currentPage]) {
                     clearInterval(countdownIntervals[currentPage]);
@@ -2104,20 +2114,25 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
 
                 endTimer(currentPage);
                 document.getElementById(currentPage).style.display = 'none';
-                document.getElementById(pageName).style.display = 'flex';
+                document.getElementById(pageName).style.display = pageName === 'loadingPage' ? 'flex' : 'flex';
 
                 document.querySelectorAll('[id^="uniqueIndexDisplay-"]').forEach(display => {
                     display.style.display = 'none';
                 });
-                document.getElementById(`uniqueIndexDisplay-${pageName}`).style.display = 'block';
+                if (pageName !== 'loadingPage') {
+                    document.getElementById(`uniqueIndexDisplay-${pageName}`).style.display = 'block';
+                }
 
                 currentPage = pageName;
                 startTimer(pageName);
 
-                experimentData.gptPage.conversationHistory = [];
-                experimentData.taskPage.conversationHistory = [];
-
+                if (pageName !== 'loadingPage') {
+                    experimentData.gptPage.conversationHistory = [];
+                    experimentData.taskPage.conversationHistory = [];
+                }
                 switch (pageName) {
+                    case 'loadingPage':
+                        break;
                     case 'agePage':
                         startAutButtonCountdown();
                         break;
@@ -2470,7 +2485,7 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
                 return conditionID;
             }
 
-            function generateUniqueIndex(conditionID) {
+            function generateUniqueIndex(conditionID, receivedID) {
                 const conditionIDNoDash = conditionID.replace(/-/g, '');
                 const now = new Date();
                 const startDate = now.getFullYear().toString() +
@@ -2480,12 +2495,11 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
                     now.getMinutes().toString().padStart(2, '0');
                 const uniqueID = Math.random().toString(36).substring(2, 8).toUpperCase();
                 const uniqueIndex = `${receivedID}-V${conditionIDNoDash}${startDate}${startTime}${uniqueID}`;
-                experimentData.uniqueIndex = uniqueIndex;
                 return uniqueIndex;
             }
 
             function addUniqueIndexDisplay() {
-                const pages = ['welcomePage', 'gptPage', 'agePage', 'autPage', 'beforeTaskPage', 'taskPage', 'surveyPage', 'endPage'];
+                const pages = ['welcomePage', 'loadingPage', 'gptPage', 'agePage', 'autPage', 'beforeTaskPage', 'taskPage', 'surveyPage', 'endPage'];
                 pages.forEach(pageId => {
                     const page = document.getElementById(pageId);
                     const uniqueIndexDisplay = document.createElement('div');

@@ -259,7 +259,7 @@
         }
 
         #reasonAreaGPT {
-            height: 50%;
+            height: 40%;
         }
 
         #namearea {
@@ -596,7 +596,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 10px 0;
+            margin: 0px;
             gap: 10px;
         }
 
@@ -632,8 +632,8 @@
 
         #addIdeaError {
             color: #e74c3c;
-            height: 20px;
-            margin-top: 5px;
+            height: 50%;
+            margin-top: auto;
             font-size: 12px;
             text-align: center;
         }
@@ -700,8 +700,7 @@
         #surveyTitle {
             text-align: center;
             color: #333;
-            margin-top: 30px;
-            margin-bottom: 10px;
+            margin-top: 20px;
         }
 
         #errorSurveyContainer {
@@ -1089,7 +1088,7 @@
                 <div id="wordCountGPT" class="word-count">Word Count: 0</div>
             </div>
             <div id="errorContainer" style="height: 40px; margin-top: 10px;">
-                <span id="errorGPT" style="color: #e74c3c; display: none; font-size: 14px;"></span>
+                <span id="errorGPT" style="color: #e74c3c; display: none; font-size: 12px;"></span>
             </div>
             <button id="go2AgePage" disabled>Next</button>
         </div>
@@ -1214,10 +1213,17 @@
                 <span>Click "+" button and scroll down to add more ideas</span>
                 <button id="addIdeaButton">+</button>
             </div>
-            <div id="addIdeaError"></div>
-            <div id="errorTaskContainer" style="height: 20px; margin-top: 10px;">
-                <span id="errorTask" style="color: #e74c3c; display: none; font-size: 12px;">Please submit at least
-                    three ideas with at least 20 words for each idea.</span>
+            <div id="errorContainer"
+                style="min-height: 50px; margin-top: 10px; display: flex; flex-direction: column; justify-content: center;">
+                <div id="errorTaskContainer"
+                    style="min-height: 25px; display: flex; align-items: center; justify-content: center;">
+                    <span id="errorTask"
+                        style="color: #e74c3c; display: none; font-size: 12px; text-align: center;">Please submit at
+                        least three ideas with at least 20 words for each idea.</span>
+                </div>
+                <div id="addIdeaError"
+                    style="min-height: 25px; display: flex; align-items: center; justify-content: center; color: #e74c3c; font-size: 12px; text-align: center;">
+                </div>
             </div>
             <button id="go2SurveyPage" disabled>Submit</button>
         </div>

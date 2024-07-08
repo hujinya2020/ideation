@@ -2024,7 +2024,7 @@
 
                 if (aiOrHm === 'HM') {
                     newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">! No Generative AI Tools:</span> You MUST NOT use
-any generative AI tools, such as ChatGPT, to complete this task. Your work will be subjected to
+any generative AI tools, such as ChatGPT, to complete this task. Your work will be submitted to
 AI detection. If AI usage is detected, you will NOT receive payment.`;
                     taskChatbot.style.display = 'none';
                 } else {
@@ -2078,7 +2078,7 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
             <li style="margin-bottom: 10px;">Your ideation should disregard production cost.</li>
             <li style="margin-bottom: 10px;">Submit at least three ideas and give a description for each idea with at least 20 words.</li>
             <li style="margin-bottom: 10px;">${aiOrHm === 'HM'
-                        ? '<span style="color: #e74c3c; font-weight: bold;">You MUST NOT use any generative AI tools, such as ChatGPT, to complete this task. Your work will be subjected to AI detection. If AI usage is detected, you will NOT receive payment.</span>'
+                        ? '<span style="color: #e74c3c; font-weight: bold;">You MUST NOT use any generative AI tools, such as ChatGPT, to complete this task. Your work will be submitted to AI detection. If AI usage is detected, you will NOT receive payment.</span>'
                         : '<span style="color: #e74c3c; font-weight: bold;">You MUST use the AI Assistant to help you finish the ideation task. Please COMBINE your creativity with AI creativity. If you do not use the AI Assistant, you will NOT receive payment.</span>'}
             </li>
         </ul>

@@ -317,7 +317,7 @@
         #readyButton,
         #submitButton,
         #go2SurveyPage,
-        #go2AgePage,
+        #go2BeforeTaskPage,
         #autButton,
         #taskButton,
         #go2BeforeTaskPage {
@@ -335,7 +335,7 @@
         }
 
         #go2SurveyPage,
-        #go2AgePage,
+        #go2BeforeTaskPage,
         #go2BeforeTaskPage {
             width: calc(100% - 20px);
             margin: 10px;
@@ -346,7 +346,7 @@
         #go2SurveyPage:hover,
         #autButton:hover,
         #taskButton:hover,
-        #go2AgePage:hover,
+        #go2BeforeTaskPage:hover,
         #go2BeforeTaskPage:hover {
             background-color: #27ae60;
             transform: translateY(-2px);
@@ -989,17 +989,17 @@
             <div style="padding: 20px; border: 2px solid #3498db; border-radius: 12px; background-color: #f9f9f9;">
                 <ul style="list-style-type: none; padding: 0;">
                     <li style="margin-bottom: 15px; text-align: left;">
-                        <span style="color: #e74c3c; font-weight: bold;">✓ Full-Screen Mode:</span> The following
+                        <span style="color: #e74c3c; font-weight: bold;">⚠️ Full-Screen Mode:</span> The following
                         session will be conducted in full-screen mode. Please AVOID exiting full-screen mode, as doing
                         so will end the session prematurely.
                     </li>
                     <li style="margin-bottom: 15px; text-align: left;">
-                        <span style="color: #e74c3c; font-weight: bold;">✓ Time Commitment:</span> The experiment
-                        consists of three tasks and one survey, with an expected duration of 10 minutes. Please
+                        <span style="color: #e74c3c; font-weight: bold;">⌛️ Time Commitment:</span> The experiment
+                        consists of three tasks + one survey, with an expected duration of 10 minutes. Please
                         allocate sufficient time to complete all components without interruption.
                     </li>
                     <li style="margin-bottom: 15px; text-align: left;">
-                        <span style="color: #e74c3c; font-weight: bold;">✓ Task Instructions:</span> Read all
+                        <span style="color: #e74c3c; font-weight: bold;">✅ Task Instructions:</span> Read all
                         instructions carefully before beginning each task.
                     </li>
                 </ul>
@@ -1007,6 +1007,51 @@
             <button id="readyButton">Getting Ready...</button>
             <div id="uniqueIndexDisplay"
                 style="position: fixed; bottom: 10px; right: 10px; color: #bdc3c7; font-size: 12px; display :block">
+            </div>
+        </div>
+    </div>
+
+    <div id="agePage">
+        <div style="max-width: 600px; text-align: center;">
+            <h1 style="font-size: 24px; margin-bottom: 20px; color: #3498db;"><strong>Upcoming: Alternative Uses
+                    Test</strong></h1>
+            <div style="padding: 20px; border: 2px solid #3498db; border-radius: 12px; background-color: #f9f9f9;">
+                <p style="margin-bottom: 20px;">Before we proceed, please provide your age.</p>
+                <input type="number" id="ageInput" placeholder="Age" min="1" max="120"
+                    style="font-size: 16px; width: 100px; text-align: center; margin: 0 auto 20px; display: block; padding: 10px; border: 1px solid #3498db; border-radius: 8px;">
+                <p style="margin-bottom: 15px; text-align: left;">✅ In the next page, you will complete a test by
+                    <span style="color: #e74c3c; font-weight: bold;"> listing novel uses for a paper clip 📎</span> in
+                    <span style="color: #e74c3c; font-weight: bold;"> 2 minutes</span>.
+                </p>
+                <p style="margin-bottom: 15px; text-align: left;">⌛️ The countdown will <span
+                        style="color: #e74c3c; font-weight: bold;">start immediately</span> after you press
+                    the "I am ready" button.</p>
+            </div>
+            <button id="autButton" disabled style="margin-top: 20px;">Getting Ready...</button>
+        </div>
+    </div>
+
+    <div id="autPage">
+        <div id="aut-container">
+            <div id="autCountdown"
+                style="text-align:center; font-size:24px; margin-top:10px; font-weight: bold; color: #3498db;">Time
+                left: 02:00</div>
+            <div id="autTask">
+                <p>
+                    <li style="margin-bottom: 10px;"> <span
+                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">TASK:</span>
+                        Please
+                        list novel uses for <span style="color: #e74c3c; font-weight: bold;"> a paper clip</span> 📎 as
+                        many as
+                        possible in <span style="color: #e74c3c; font-weight: bold;">2 minutes</span>.
+                </p>
+                <div id="autAnswers">
+                    <textarea class="autAnswer" placeholder="Enter a novel use for a paper clip"></textarea>
+                </div>
+            </div>
+            <div id="addAnswerButtonContainer">
+                <span>Click "+" button and scroll down to add more uses</span>
+                <button id="addAnswerButton">+</button>
             </div>
         </div>
     </div>
@@ -1062,27 +1107,36 @@
                             </li>
                         </ul>
                     </li>
-                    <li style="margin-bottom: 10px;"> The following practices are designed to help you get familiar with
-                        the AI Assistant and the overall task. Your responses here will <span
+                    <li style="margin-bottom: 10px;"> The following <span
+                            style="color: #e74c3c; font-weight: bold;">practice</span> is designed to
+                        help you <span style="color: #e74c3c; font-weight: bold;">get familiar with
+                            the AI Assistant and the final task</span>. Your idea will <span
                             style="margin-bottom: 10px; color: #e74c3c;font-weight: bold;">NOT </span>be evaluated.
                     </li>
                 </ul>
             </div>
             <div id="gptTask">
                 <ul style="padding: 0; padding-left: 20px; text-align: left;">
-                    <li style="margin-bottom: 10px;"><span
-                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">PRACTICE
-                            1:</span> Please send at least <span
-                            style="margin-bottom: 10px; color: #e74c3c;font-weight: bold;"> one message for a textual
-                            response and one message for an image response </span> to the AI Assistant.
-                        Please let it help you finish the task below.
-                    </li>
                     <li style="margin-bottom: 10px;"> <span
-                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">PRACTICE
-                            2:</span> Please design <span style="color: #e74c3c; font-weight: bold;"> a
-                            daily necessity by combining these two concepts: spoon and fork</span>. Please give a
+                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">PRACTICE:</span>
+                        Please design a
+                        daily necessity by combining these two concepts: <span
+                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">spoon</span>
+                        and <span
+                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">fork</span>.
+                    </li>
+                </ul>
+                <ul style="list-style-type: circle; margin-top: 10px;">
+                    <li style="margin-bottom: 10px;"> Step 1: Please send at least <span
+                            style="margin-bottom: 10px; color: #e74c3c;font-weight: bold;">one</span> message for a
+                        textual
+                        response and <span style="margin-bottom: 10px; color: #e74c3c;font-weight: bold;">one
+                        </span>message for an image response to the AI Assistant. </li>
+                    <li style="margin-bottom: 10px;">
+                        Step 2: Please give a
                         description for
-                        your idea with at least 20 words.</li>
+                        your idea with at least <span style="margin-bottom: 10px; color: #e74c3c;font-weight: bold;">20
+                        </span>words. </li>
                 </ul>
                 <textarea id="reasonAreaGPT" placeholder="Enter an idea here..."></textarea>
                 <div id="wordCountGPT" class="word-count">Word Count: 0</div>
@@ -1090,73 +1144,28 @@
             <div id="errorContainer" style="height: 40px; margin-top: 10px;">
                 <span id="errorGPT" style="color: #e74c3c; display: none; font-size: 12px;"></span>
             </div>
-            <button id="go2AgePage" disabled>Next</button>
-        </div>
-    </div>
-
-    <div id="agePage">
-        <div style="max-width: 600px; text-align: center;">
-            <h1 style="font-size: 24px; margin-bottom: 20px; color: #3498db;"><strong>TASK 2: Alternative Uses
-                    Test</strong></h1>
-            <div style="padding: 20px; border: 2px solid #3498db; border-radius: 12px; background-color: #f9f9f9;">
-                <p style="margin-bottom: 20px;">Before we proceed, please provide your age.</p>
-                <input type="number" id="ageInput" placeholder="Age" min="1" max="120"
-                    style="font-size: 16px; width: 100px; text-align: center; margin: 0 auto 20px; display: block; padding: 10px; border: 1px solid #3498db; border-radius: 8px;">
-                <p style="margin-bottom: 15px; text-align: left;">✓ In the next page, you will complete a test by
-                    <span style="color: #e74c3c; font-weight: bold;"> listing novel uses for a paper clip</span> in
-                    <span style="color: #e74c3c; font-weight: bold;"> 2 minutes</span>.
-                </p>
-                <p style="margin-bottom: 15px; text-align: left;">! The countdown will <span
-                        style="color: #e74c3c; font-weight: bold;">start immediately</span> after you press
-                    the "I am ready" button.</p>
-            </div>
-            <button id="autButton" disabled style="margin-top: 20px;">Getting Ready...</button>
-        </div>
-    </div>
-
-    <div id="autPage">
-        <div id="aut-container">
-            <div id="autCountdown"
-                style="text-align:center; font-size:24px; margin-top:10px; font-weight: bold; color: #3498db;">Time
-                left: 02:00</div>
-            <div id="autTask">
-                <p>
-                    <li style="margin-bottom: 10px;"> <span
-                            style="color: #e74c3c; font-weight: bold; font-size: 1.2em; background-color: #FFE6E6; padding: 2px 5px; border-radius: 3px;">TASK:</span>
-                        Please
-                        list novel uses for <span style="color: #e74c3c; font-weight: bold;"> a paper clip</span> as
-                        many as
-                        possible in <span style="color: #e74c3c; font-weight: bold;">2 minutes</span>.
-                </p>
-                <div id="autAnswers">
-                    <textarea class="autAnswer" placeholder="Enter a novel use for a paper clip"></textarea>
-                </div>
-            </div>
-            <div id="addAnswerButtonContainer">
-                <span>Click "+" button and scroll down to add more uses</span>
-                <button id="addAnswerButton">+</button>
-            </div>
+            <button id="go2BeforeTaskPage" disabled>Next</button>
         </div>
     </div>
 
     <div id="beforeTaskPage">
         <div style="max-width: 700px; text-align: center;">
-            <h1 style="font-size: 24px; margin-bottom: 20px; color: #3498db;"><strong>FINAL TASK: Creative Ideation
+            <h1 style="font-size: 24px; margin-bottom: 20px; color: #3498db;"><strong>Final Task: Creative Ideation
                 </strong></h1>
             <div style="padding: 20px; border: 2px solid #3498db; border-radius: 12px; background-color: #f9f9f9;">
                 <ul style="list-style-type: none; padding: 0;">
                     <li style="margin-bottom: 15px; text-align: left;"><span
-                            style="color: #e74c3c; font-weight: bold;">✓ Unlimited Time:</span> You have unlimited time
+                            style="color: #e74c3c; font-weight: bold;">⌛️ Unlimited Time:</span> You have unlimited time
                         to complete this task. The minimum time required for this task is five minutes.</li>
                     <li style="margin-bottom: 15px; text-align: left;"><span
-                            style="color: #e74c3c; font-weight: bold;">✓ At Least Three Ideas:</span> Please generate at
+                            style="color: #e74c3c; font-weight: bold;">✅ Three Ideas:</span> Please generate at
                         least three ideas. Feel free to be as creative as possible and submit your answers once you
                         are satisfied. </li>
                     <li style="margin-bottom: 15px; text-align: left;"><span
-                            style="color: #e74c3c; font-weight: bold;">$ Basic Payment:</span> Complete the task to
+                            style="color: #e74c3c; font-weight: bold;">💰 Basic Payment:</span> Complete the task to
                         receive a base compensation of $5. </li>
                     <li style="margin-bottom: 15px; text-align: left;"><span
-                            style="color: #e74c3c; font-weight: bold;">$ Additional Bonus:</span> Your ideas will be
+                            style="color: #e74c3c; font-weight: bold;">💰 Additional Bonus:</span> Your ideas will be
                         rated by human professionals. If any of your ideas rank in the top 20% for novelty, you will
                         receive an additional $3 bonus. If any of your ideas rank between the top 20% and 50% for
                         novelty, you will receive an additional $2 bonus. </li>
@@ -1648,7 +1657,7 @@
                 document.documentElement.requestFullscreen().catch((err) => {
                     console.warn("Error trying to enter full-screen mode:", err.message);
                 });
-                transitionToPage('gptPage'); // LATER
+                transitionToPage('agePage'); // LATER
             });
 
             let countdownTimeAutButton = 10; // LATER
@@ -1693,7 +1702,7 @@
                 transitionToPage('taskPage');
             });
 
-            const go2AgePage = document.getElementById('go2AgePage');
+            const go2BeforeTaskPage = document.getElementById('go2BeforeTaskPage');
             const reasonAreaGPT = document.getElementById('reasonAreaGPT');
             const errorGPT = document.getElementById('errorGPT');
             const wordCountGPT = document.getElementById('wordCountGPT');
@@ -1736,7 +1745,7 @@
                 }
 
                 errorGPT.style.display = errorGPT.textContent ? 'block' : 'none';
-                go2AgePage.disabled = !hasEnoughWords || !hasSentBothMessages;
+                go2BeforeTaskPage.disabled = !hasEnoughWords || !hasSentBothMessages;
             }
 
             reasonAreaGPT.addEventListener('input', updateWordCountGPT);
@@ -1751,9 +1760,9 @@
                 validateGptPage();
             });
 
-            go2AgePage.addEventListener('click', function () {
+            go2BeforeTaskPage.addEventListener('click', function () {
                 if (!this.disabled) {
-                    transitionToPage('agePage');
+                    transitionToPage('beforeTaskPage');
                 }
             });
 
@@ -1884,7 +1893,7 @@
 
                     // Prepare the messages array for the API call
                     const messages = [
-                        { role: "system", content: "You are a creative assistant. Please reply all questions with 100 words. For every idea you provided, please give detailed reasons for that." },
+                        { role: "system", content: "You are a creative assistant to help users design products. Please reply all questions with 100 words. For every idea you provided, please give detailed reasons for that." },
                         ...conversationHistory
                     ];
 
@@ -1895,7 +1904,7 @@
                             'Authorization': `Bearer ${apiKey}`
                         },
                         body: JSON.stringify({
-                            model: "gpt-4",
+                            model: "gpt-4o",
                             messages: messages,
                         })
                     });
@@ -1933,7 +1942,6 @@
 
             async function callDALLE3API(userMessage, chatDisplay, pageId) {
                 try {
-                    // Create and display loading animation
                     const loaderElement = document.createElement('div');
                     loaderElement.classList.add('loader');
                     const messageElement = document.createElement('div');
@@ -1956,7 +1964,8 @@
                             prompt: userMessage,
                             n: 1,
                             size: "1024x1024",
-                            response_format: "b64_json"
+                            response_format: "b64_json",
+                            style: "natural",
                         })
                     });
 
@@ -1968,16 +1977,12 @@
                     const imageData = data.data[0].b64_json;
                     const imageUrl = `data:image/png;base64,${imageData}`;
 
-                    // Remove loading animation
                     chatDisplay.removeChild(messageElement);
-
-                    // Display the generated image
                     displayMessage(imageUrl, 'bot', chatDisplay, pageId);
 
                 } catch (error) {
                     console.error("Error calling the DALL-E 3 API:", error);
 
-                    // Remove loading animation in case of error
                     const loaderElement = chatDisplay.querySelector('.loader');
                     if (loaderElement) {
                         chatDisplay.removeChild(loaderElement.parentElement);
@@ -1998,12 +2003,12 @@
                     minutes = minutes < 10 ? "0" + minutes : minutes;
                     seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                    document.getElementById(displayElementId).textContent = `Time left: ${minutes}:${seconds}`;
+                    document.getElementById(displayElementId).textContent = `Time Left: ${minutes}:${seconds}`;
 
                     if (--timer < 0) {
                         clearInterval(countdownInterval);
                         if (currentPage === 'autPage') {
-                            showModal(() => transitionToPage('beforeTaskPage'));
+                            showModal(() => transitionToPage('gptPage'));
                         } else {
                             transitionToNextPage();
                         }
@@ -2029,12 +2034,12 @@
                 newLi.style.textAlign = 'left';
 
                 if (aiOrHm === 'HM') {
-                    newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">! No Generative AI Tools:</span> You MUST NOT use
+                    newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">⚠️ No Generative AI Tools:</span> You MUST NOT use
 any generative AI tools, such as ChatGPT, to complete this task. Your work will be submitted to
 AI detection. If AI usage is detected, you will NOT receive payment.`;
                     taskChatbot.style.display = 'none';
                 } else {
-                    newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">! Use AI Assistant:</span> You MUST use the AI Assistant to help you finish the ideation task. Please COMBINE your creativity with AI creativity. If you do not use the AI Assistant, you will NOT receive payment.`;
+                    newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">⚠️ Use AI Assistant:</span> You MUST use the AI Assistant to help you finish the ideation task. Please COMBINE your creativity with AI creativity. If you do not use the AI Assistant, you will NOT receive payment.`;
                     taskChatbot.style.display = 'flex';
                 }
                 beforeTaskInstructions.appendChild(newLi);
@@ -2113,14 +2118,14 @@ AI detection. If AI usage is detected, you will NOT receive payment.`;
                 experimentData.taskPage.conversationHistory = [];
 
                 switch (pageName) {
-                    case 'gptPage':
-                        sendPredefinedGptMessage();
-                        break;
                     case 'agePage':
                         startAutButtonCountdown();
                         break;
                     case 'autPage':
                         startCountdown(120, 'autCountdown'); // LATER
+                        break;
+                    case 'gptPage':
+                        sendPredefinedGptMessage();
                         break;
                     case 'beforeTaskPage':
                         startTaskButtonCountdown();

@@ -104,11 +104,22 @@
             <p>Conceptual distance refers to how closely related or similar two concepts are in semantics.</p>
             <ul>
                 <li>Two concepts are considered <strong>near</strong> when they come from identical or closely related
-                    domains. For example, "strawberry" and "apple" can be considered near concepts as they are both
-                    fruits.</li>
+                    domains. This applies to both concrete and abstract concepts:
+                    <ul>
+                        <li>"strawberry" and "apple" are near concepts as they are both fruits.</li>
+                        <li>"movement" and "balance" are near concepts as they both relate to physical motion and body
+                            control.</li>
+                    </ul>
+                </li>
                 <li>Two concepts are considered <strong>remote</strong> when they come from non-identical or distantly
-                    related domains. For example, "strawberry" and "bird" can be considered remote concepts as they
-                    belong to very different categories (fruits vs. animals).</li>
+                    related domains. This also applies to both concrete and abstract concepts:
+                    <ul>
+                        <li>"strawberry" and "bird" are remote concepts as they belong to very different categories
+                            (fruits vs. animals).</li>
+                        <li>"movement" and "creativity" are remote concepts as they belong to different domains
+                            (physical action vs. mental process).</li>
+                    </ul>
+                </li>
             </ul>
             <p><strong>Task-1: Using a 7-point rating scale ranging from "Near" (1) to "Remote" (7), please evaluate the
                     conceptual distance of these four pairs:</strong></p>
@@ -306,7 +317,7 @@
 
             console.log("Submitting data:", surveyData);
 
-            database.ref('pretest').child(sessionId).set(surveyData)
+            database.ref('pretest-v2').child(sessionId).set(surveyData)
                 .then(() => {
                     console.log("Document written with ID: ", sessionId);
                     document.getElementById('surveyPage').style.display = 'none';

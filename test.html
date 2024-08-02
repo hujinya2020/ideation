@@ -220,25 +220,25 @@
         }
 
         const conceptualDistanceQuestions = [
-            { question: '"Car" and "Boat":', name: 'car_boat' },
-            { question: '"Car" and "Laptop":', name: 'car_laptop' },
-            { question: '"Mobility" and "Floatability":', name: 'mobility_floatability' },
-            { question: '"Mobility" and "Computation":', name: 'mobility_computation' },
+            { question: '"Car" (a motor vehicle with room for a small number of passengers) and "Boat" (something in which people can travel across water):', name: 'car_boat' },
+            { question: '"Car" (a motor vehicle with room for a small number of passengers) and "Laptop" (a small portable computer):', name: 'car_laptop' },
+            { question: '"Mobility" (the ability to move physically) and "Floatability" (the ability to float):', name: 'mobility_floatability' },
+            { question: '"Mobility" (the ability to move physically) and "Computation" (mathematical calculation):', name: 'mobility_computation' },
             { question: 'Please select slightly remote:', name: 'attention_check' }
         ];
 
         const conceptualAbstractnessQuestions = [
-            { question: '"Car":', name: 'car_abstractness' },
-            { question: '"Boat":', name: 'boat_abstractness' },
-            { question: '"Laptop":', name: 'laptop_abstractness' },
-            { question: '"Mobility":', name: 'mobility_abstractness' },
-            { question: '"Floatability":', name: 'floatability_abstractness' },
-            { question: '"Computation":', name: 'computation_abstractness' }
+            { question: '"Car": a motor vehicle with room for a small number of passengers', name: 'car_abstractness' },
+            { question: '"Boat": something in which people can travel across water', name: 'boat_abstractness' },
+            { question: '"Laptop": a small portable computer', name: 'laptop_abstractness' },
+            { question: '"Mobility": the ability to move physically', name: 'mobility_abstractness' },
+            { question: '"Floatability": the ability to float (float: If something or someone is floating in a liquid, they are in the liquid, on or just below the surface, and are being supported by it.)', name: 'floatability_abstractness' },
+            { question: '"Computation": mathematical calculation', name: 'computation_abstractness' }
         ];
 
         const designGoalQuestions = [
-            { question: ' Evaluation 1: "Please design a toy, anything a child (age 5-11) can use to play with, by combining two common concepts in the daily life. The design goal is to help children increase their cognitive ability." The goal of this task is', name: 'task1' },
-            { question: 'Evaluation 2: "Please design a toy, anything a child (age 5-11) can use to play with, by combining two common concepts in the daily life. The design goal is to help children to have fun." The goal of this task is', name: 'task2' }
+            { question: ' Evaluation 1: "Please design a toy, anything a child (age 5-11) can use to play with, by combining two common concepts in the daily life. The design goal is to help children increase their cognitive ability (Cognitive Ability: the ability to reason, plan, solve problems, think abstractly, comprehend complex ideas, learn quickly and learn from experience)." The goal of this task is', name: 'task1' },
+            { question: 'Evaluation 2: "Please design a toy, anything a child (age 5-11) can use to play with, by combining two common concepts in the daily life. The design goal is to help children to have fun (Have fun: to enjoy oneself and experience pleasure or excitement)." The goal of this task is', name: 'task2' }
         ];
 
         const distanceOptions = ['Very Near', 'Moderately Near', 'Slightly Near', 'Neither Near nor Remote', 'Slightly Remote', 'Moderately Remote', 'Very Remote'];
@@ -317,7 +317,7 @@
 
             console.log("Submitting data:", surveyData);
 
-            database.ref('pretest-v3').child(sessionId).set(surveyData)
+            database.ref('pretest-v4').child(sessionId).set(surveyData)
                 .then(() => {
                     console.log("Document written with ID: ", sessionId);
                     document.getElementById('surveyPage').style.display = 'none';

@@ -1074,7 +1074,7 @@
             </div>
 
             <div style="text-align: center; color: #777; font-size: 14px; margin-bottom: 20px; font-weight: bold;">
-                Press RETURN after each idea
+                Press ⏎ RETURN/ENTER after each idea
             </div>
 
             <div id="autAnswers"
@@ -1523,8 +1523,10 @@
             }
 
             function preventCopyPaste(e) {
-                e.preventDefault();
-                return false;
+                if (currentPage !== 'welcomePage') {
+                    e.preventDefault();
+                    return false;
+                }
             }
 
             const inputs = document.querySelectorAll('input, textarea, [contenteditable]');
@@ -1536,13 +1538,17 @@
             });
 
             document.addEventListener('dragover', function (e) {
-                e.preventDefault();
-                return false;
+                if (currentPage !== 'welcomePage') {
+                    e.preventDefault();
+                    return false;
+                }
             }, false);
 
             document.addEventListener('drop', function (e) {
-                e.preventDefault();
-                return false;
+                if (currentPage !== 'welcomePage') {
+                    e.preventDefault();
+                    return false;
+                }
             }, false);
 
             const prolificIdInput = document.getElementById('prolificId');

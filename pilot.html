@@ -1178,7 +1178,7 @@
                         are satisfied. </li>
                     <li style="margin-bottom: 15px; text-align: left;"><span
                             style="color: #e74c3c; font-weight: bold;">💰 Basic Payment:</span> Complete the task to
-                        receive a base compensation of 5 USD. </li>
+                        receive a base compensation of 5 USD (3.93 GBP). </li>
                     <li style="margin-bottom: 15px; text-align: left;"><span
                             style="color: #e74c3c; font-weight: bold;">💰 Additional Bonus:</span> Your ideas will be
                         rated by human design professionals.
@@ -1557,7 +1557,7 @@
 
             prolificIdInput.addEventListener('input', updateReadyButtonState);
 
-            let countdownTimeReadyButton = 20; // LATER
+            let countdownTimeReadyButton = 0; // LATER -> 20
             readyButton.innerText = 'Ready in ' + countdownTimeReadyButton;
             readyButton.disabled = true;
             const countdownIntervalReadyButton = setInterval(() => {
@@ -1603,7 +1603,7 @@
                 }
             });
 
-            let countdownTimeAutButton = 20; // LATER
+            let countdownTimeAutButton = 0; // LATER -> 20
             const autButton = document.getElementById('autButton');
 
             function startAutButtonCountdown() {
@@ -1641,6 +1641,7 @@
 
             function addAlternativeUse(use) {
                 alternativeUses.push(use); // Add to array
+                experimentData.autPage.ideas.push(use); // Add to experimentData
                 const useElement = document.createElement('div');
                 useElement.textContent = use;
                 useElement.style.padding = '5px';
@@ -1650,7 +1651,7 @@
                 autAnswers.appendChild(useElement);
             }
 
-            let countdownTimeTaskButton = 20; // LATER
+            let countdownTimeTaskButton = 0; // LATER -> 20
             const taskButton = document.getElementById('taskButton');
 
             function startTaskButtonCountdown() {
@@ -1985,6 +1986,12 @@ any generative AI tools, such as ChatGPT, to complete this task. Your submission
                 }
 
                 endTimer(currentPage);
+
+                // Collect autPage ideas when transitioning away from autPage
+                if (currentPage === 'autPage') {
+                    experimentData.autPage.ideas = alternativeUses;
+                }
+
                 document.getElementById(currentPage).style.display = 'none';
                 document.getElementById(pageName).style.display = pageName === 'exitPage' ? 'block' : 'flex';
 
@@ -2054,6 +2061,11 @@ any generative AI tools, such as ChatGPT, to complete this task. Your submission
 
                 closeModal.onclick = function () {
                     modal.style.display = 'none';
+                    if (currentPage === 'autPage') {
+                        // Collect autPage ideas and send to Firebase
+                        experimentData.autPage.ideas = alternativeUses;
+                        sendToFirebase(experimentData);
+                    }
                     nextPageFunction();
                 };
             }

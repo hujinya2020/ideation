@@ -1034,8 +1034,7 @@
             <div style="padding: 20px; border: 2px solid #3498db; border-radius: 12px; background-color: #f9f9f9;">
                 <p style="margin-bottom: 15px; text-align: left;">✅ In the next page, we will provide you with an item
                     and give you <span style="color: #e74c3c; font-weight: bold;">2 minutes</span> to come up with <span
-                        style="color: #e74c3c; font-weight: bold;">as
-                        many alternative uses for it as you can</span>.</p>
+                        style="color: #e74c3c; font-weight: bold;">as many novel uses for it as possible</span>.</p>
                 <p style="margin-bottom: 0; text-align: left;">🙋 For example, if you are given the item "coffee cup",
                     you might come up with things like:</p>
                 <ul style="margin-top: -5px; padding-left:40px;">
@@ -1063,7 +1062,7 @@
             <div id="autTask"
                 style="text-align: center; margin-top: 0px; margin-bottom: 20px; padding: 10px; background-color: #f9f9f9; border-radius: 8px;">
                 <span style="font-weight: bold;">
-                    Please list novel uses for a <span style="color: #e74c3c">paper clip</span> 📎 as many as possible
+                    Please list as many novel uses for a <span style="color: #e74c3c">paper clip</span> 📎 as possible
                     in 2 minutes.
                 </span>
             </div>
@@ -1181,7 +1180,7 @@
                         receive a base compensation of 5 USD (3.93 GBP). </li>
                     <li style="margin-bottom: 15px; text-align: left;"><span
                             style="color: #e74c3c; font-weight: bold;">💰 Additional Bonus:</span> Your ideas will be
-                        rated by human design professionals.
+                        rated by experts or professionals.
                         <ul style="margin-top: -5px; padding-left: 40px;">
                             <li style="text-align: left; padding-top: 2px; padding-bottom: 2px;">If your highest-ranking
                                 idea is in the top 20% for novelty, you will receive a 3 USD (2.36 GBP) bonus.</li>
@@ -1557,7 +1556,7 @@
 
             prolificIdInput.addEventListener('input', updateReadyButtonState);
 
-            let countdownTimeReadyButton = 0; // LATER -> 20
+            let countdownTimeReadyButton = 20; // LATER -> 20
             readyButton.innerText = 'Ready in ' + countdownTimeReadyButton;
             readyButton.disabled = true;
             const countdownIntervalReadyButton = setInterval(() => {
@@ -1603,7 +1602,7 @@
                 }
             });
 
-            let countdownTimeAutButton = 0; // LATER -> 20
+            let countdownTimeAutButton = 20; // LATER -> 20
             const autButton = document.getElementById('autButton');
 
             function startAutButtonCountdown() {
@@ -1651,7 +1650,7 @@
                 autAnswers.appendChild(useElement);
             }
 
-            let countdownTimeTaskButton = 0; // LATER -> 20
+            let countdownTimeTaskButton = 20; // LATER -> 20
             const taskButton = document.getElementById('taskButton');
 
             function startTaskButtonCountdown() {
@@ -1907,14 +1906,14 @@
                 newLi.style.textAlign = 'left';
 
                 if (aiOrHm === 'HM') {
-                    newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">⚠️ No Generative AI Tools:</span> You <span
+                    newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">⚠️ No AI Assistant:</span> You <span
                 style="color: #e74c3c; font-weight: bold;">MUST NOT</span> use
-any generative AI tools, such as ChatGPT, to complete this task. Your submission will be screened for AI-generated content. If such content is detected, you will <span
+any AI Assistant to complete this task. Your submission will be screened for AI-generated content. If such content is detected, you will <span
                 style="color: #e74c3c; font-weight: bold;">NOT</span> receive payment.`;
                     taskChatbot.style.display = 'none';
                 } else {
                     newLi.innerHTML = `<span style="color: #e74c3c; font-weight: bold;">⚠️ Use AI Assistant:</span> You <span
-                style="color: #e74c3c; font-weight: bold;">MUST</span> use the AI Assistant to help you finish the ideation task. Please COMBINE your creativity with AI creativity. If you do not use the AI Assistant, you will <span
+                style="color: #e74c3c; font-weight: bold;">MUST</span> use the AI Assistant to complete this task. If you do not use the AI Assistant, you will <span
                 style="color: #e74c3c; font-weight: bold;">NOT</span> receive payment.`;
                     taskChatbot.style.display = 'flex';
                 }
@@ -1971,8 +1970,8 @@ any generative AI tools, such as ChatGPT, to complete this task. Your submission
             <li style="margin-bottom: 10px;">Your ideation should disregard production cost.</li>
             <li style="margin-bottom: 10px;">Submit at least three ideas and give a description for each idea with at least 20 words.</li>
             <li style="margin-bottom: 10px;">${aiOrHm === 'HM'
-                        ? 'You <span style="color: #e74c3c; font-weight: bold;">MUST NOT</span> use any generative AI tools, such as ChatGPT, to complete this task. Your submission will be screened for AI-generated content. If such content is detected, you will <span style="color: #e74c3c; font-weight: bold;">NOT</span> receive payment.'
-                        : 'You <span style="color: #e74c3c; font-weight: bold;">MUST</span> use the AI Assistant to help you finish the ideation task. Please COMBINE your creativity with AI creativity. If you do not use the AI Assistant, you will <span style="color: #e74c3c; font-weight: bold;">NOT</span> receive payment.'}
+                        ? 'You <span style="color: #e74c3c; font-weight: bold;">MUST NOT</span> use any AI Assistant to complete this task. Your submission will be screened for AI-generated content. If such content is detected, you will <span style="color: #e74c3c; font-weight: bold;">NOT</span> receive payment.'
+                        : 'You <span style="color: #e74c3c; font-weight: bold;">MUST</span> use the AI Assistant to complete this task. If you do not use the AI Assistant, you will <span style="color: #e74c3c; font-weight: bold;">NOT</span> receive payment.'}
             </li>
         </ul>
     </div>

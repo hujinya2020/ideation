@@ -8,22 +8,30 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
         #surveyPage {
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
         }
 
         #surveyTitle h2 {
             text-align: center;
             margin-bottom: 30px;
+            color: #3498db;
         }
 
         .form-group {
             margin-bottom: 30px;
-            background-color: #f9f9f9;
+            background-color: #fff;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -32,10 +40,28 @@
         .form-group h3 {
             color: #3498db;
             margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .definition-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box h4 {
+            margin-top: 0;
+            color: #3498db;
         }
 
         .rating-question {
             margin-bottom: 20px;
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
         }
 
         .rating-question p {
@@ -43,13 +69,23 @@
             margin-bottom: 10px;
         }
 
-        .rating-question div {
-            margin-bottom: 5px;
+        .rating-options {
+            display: flex;
+            flex-direction: column;
         }
 
-        input[type="text"],
-        input[type="radio"] {
-            margin-right: 5px;
+        .rating-option {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .rating-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .rating-option label {
+            flex: 1;
         }
 
         input[type="text"] {
@@ -73,9 +109,10 @@
             display: block;
             width: 100%;
             max-width: 800px;
-            margin: 0 auto;
+            margin: 20px auto 0;
             text-align: center;
             box-sizing: border-box;
+            transition: background-color 0.3s ease;
         }
 
         #surveyButton:hover {
@@ -87,13 +124,26 @@
             margin-top: 10px;
             text-align: center;
         }
+
+        .definition-box {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .example-image {
+            max-width: 60%;
+            height: auto;
+            display: block;
+            margin: 10px 0;
+        }
     </style>
 </head>
 
 <body>
     <div id="surveyPage">
         <div id="surveyTitle">
-            <h2 style="color: #3498db;">Concept Evaluation</h2>
+            <h2>Concept Evaluation</h2>
         </div>
         <div class="form-group">
             <label for="prolificId">Prolific ID:</label>
@@ -101,56 +151,78 @@
         </div>
         <div class="form-group">
             <h3>1. Conceptual Abstractness</h3>
-            <p>Conceptual abstractness describes how much a word refers to intangible qualities or ideas.</p>
-            <ul>
-                <li>A <strong>concrete</strong> word refers to something that exists in reality; you can have immediate
-                    experience of it through your senses (smelling, tasting, touching, hearing, seeing) and the actions
-                    you do. The easiest way to explain a word is by pointing to it or by demonstrating it. For example,
-                    to explain "sweet" you could have someone eat sugar.</li>
-                <li>An <strong>abstract</strong> word refers to something you cannot experience directly through your
-                    senses or actions. Its meaning depends on language. The easiest way to explain it is by using other
-                    words. For example, there is no simple way to demonstrate "justice", but we can explain the meaning
-                    of the word by using other words that capture parts of its meaning.</li>
-            </ul>
+            <div class="definition-box">
+                <h4>Definition:</h4>
+                <p>Conceptual abstractness describes how much a word refers to intangible qualities or ideas.</p>
+                <ul>
+                    <li><strong>Concrete:</strong> Refers to something that exists in reality; you can have immediate
+                        experience of it through your senses (smelling, tasting, touching, hearing, seeing) and the
+                        actions you do. The easiest way to explain a word is by pointing to it or by demonstrating it
+                        (e.g. To explain 'couch', you could point to a couch or show a picture of a couch).</li>
+                    <li><strong>Abstract:</strong> Refers to something you cannot experience directly through your
+                        senses or actions. Its meaning depends on language. The easiest way to explain it is by using
+                        other words (e.g. There is no simple way to demonstrate 'justice'; but we can explain the
+                        meaning of the word by using other words that capture parts of its meaning).</li>
+                </ul>
+            </div>
             <p><strong>Task-1: Using a 7-point rating scale ranging from "Concrete" (1) to "Abstract" (7), please
                     evaluate the conceptual abstractness of these six words:</strong></p>
             <div id="conceptualAbstractnessQuestions"></div>
         </div>
         <div class="form-group">
             <h3>2. Conceptual Distance</h3>
-            <p>Conceptual distance refers to how closely related or similar two concepts are in semantics.</p>
-            <ul>
-                <li>Two concepts are considered <strong>near</strong> when they come from identical or closely related
-                    domains. This applies to both concrete and abstract concepts:
-                    <ul>
-                        <li>"strawberry" and "apple" are near concepts as they are both fruits.</li>
-                        <li>"movement" and "balance" are near concepts as they both relate to physical motion and body
-                            control.</li>
-                    </ul>
-                </li>
-                <li>Two concepts are considered <strong>remote</strong> when they come from non-identical or distantly
-                    related domains. This also applies to both concrete and abstract concepts:
-                    <ul>
-                        <li>"strawberry" and "bird" are remote concepts as they belong to very different categories
-                            (fruits vs. animals).</li>
-                        <li>"movement" and "creativity" are remote concepts as they belong to different domains
-                            (physical action vs. mental process).</li>
-                    </ul>
-                </li>
-            </ul>
+            <div class="definition-box">
+                <h4>Definition:</h4>
+                <p>Conceptual distance measures the relatedness of two concepts within a hierarchical knowledge
+                    structure. Two concepts are considered to have a near conceptual distance when they belong to the
+                    same superordinate category.</p>
+                <ul>
+                    <li><strong>Categories:</strong>
+                        <ul>
+                            <li> <span style="font-weight: bold;">Super-Ordinate Categories:</span> The ones at the
+                                super-ordinate level share the least number of features amongst themselves.</li>
+                            <li> <span style="font-weight: bold;">Basic-Level Categories:</span> The ones at the basic
+                                level have many shared features and also many distinct ones.</li>
+                            <li> <span style="font-weight: bold;">Subordinate Categories:</span> The ones at the
+                                subordinate level are the least differentiated as they have many shared features and
+                                less distinct features.</li>
+                            <li>Example:
+                                <img class="example-image" src="example.png"
+                                    alt="Example of conceptual distance categories">
+                            </li>
+                        </ul>
+                    </li>
+                    <li><strong>Near concepts:</strong> come from the same super-ordinate categories. Examples:
+                        <ul>
+                            <li>"apple" and "peach" (both fruits)</li>
+                            <li>"running" and "jumping" (both physical activities)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Remote concepts:</strong> come from different super-ordinate categories.
+                        Examples:
+                        <ul>
+                            <li>"apple" and "table" (fruit vs. furniture)</li>
+                            <li>"running" and "imagination" (physical activity vs. mental process)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
             <p><strong>Task-2: Using a 7-point rating scale ranging from "Near" (1) to "Remote" (7), please evaluate the
                     conceptual distance of these four pairs:</strong></p>
             <div id="conceptualDistanceQuestions"></div>
         </div>
         <div class="form-group">
             <h3>3. Design Goal</h3>
-            <p>Design goals can be categorized as utilitarian or hedonic:</p>
-            <ul>
-                <li><strong>Utilitarian Goal</strong>: aim to enhance the functional, instrumental, and practical
-                    benefits of designs</li>
-                <li><strong>Hedonic Goal</strong>: aim to enhance the aesthetic, experiential, and enjoyment-related
-                    benefits of designs</li>
-            </ul>
+            <div class="definition-box">
+                <h4>Definition:</h4>
+                <p>Design goals can be categorized as utilitarian or hedonic:</p>
+                <ul>
+                    <li><strong>Utilitarian Goal:</strong> Aim to enhance the functional, instrumental, and practical
+                        benefits of designs</li>
+                    <li><strong>Hedonic Goal:</strong> Aim to enhance the aesthetic, experiential, and enjoyment-related
+                        benefits of designs</li>
+                </ul>
+            </div>
             <p><strong>Task-3: Using a 7-point rating scale ranging from "Utilitarian" (1) to "Hedonic" (7), please
                     evaluate the goal orientation of these two design tasks:</strong></p>
             <div id="designGoalQuestions"></div>
@@ -158,7 +230,7 @@
         <div id="errorSurveyContainer">
             <div id="errorSurvey"></div>
         </div>
-        <div id="surveyButton">Submit</div>
+        <button id="surveyButton">Submit</button>
     </div>
     <div id="completionPage" style="display: none; text-align: center; padding: 50px;">
         <h2>Thank you for completing the evaluation!</h2>
@@ -203,7 +275,7 @@
 
         function createRadioOptions(name, labels) {
             return labels.map((label, index) => `
-                <div>
+                <div class="rating-option">
                     <input type="radio" id="${name}_${index + 1}" name="${name}" value="${index + 1}" required>
                     <label for="${name}_${index + 1}">${index + 1} - ${label}</label>
                 </div>
@@ -214,31 +286,33 @@
             return `
                 <div class="rating-question">
                     <p>${question}</p>
-                    ${createRadioOptions(name, options)}
+                    <div class="rating-options">
+                        ${createRadioOptions(name, options)}
+                    </div>
                 </div>
             `;
         }
 
         const conceptualDistanceQuestions = [
-            { question: '"Car" (a motor vehicle with room for a small number of passengers) and "Boat" (something in which people can travel across water):', name: 'car_boat' },
-            { question: '"Car" (a motor vehicle with room for a small number of passengers) and "Laptop" (a small portable computer):', name: 'car_laptop' },
-            { question: '"Mobility" (the ability to move physically) and "Floatability" (the ability to float):', name: 'mobility_floatability' },
-            { question: '"Mobility" (the ability to move physically) and "Computation" (mathematical calculation):', name: 'mobility_computation' },
+            { question: '"Car" <i style="font-weight: normal;">(a motor vehicle with room for a small number of passengers)</i> and "Boat" <i style="font-weight: normal;">(something in which people can travel across water)</i>', name: 'car_boat' },
+            { question: '"Car" <i style="font-weight: normal;">(a motor vehicle with room for a small number of passengers)</i> and "Computer" <i style="font-weight: normal;">(an electronic machine that can store and deal with large amounts of information)</i>', name: 'car_computer' },
+            { question: '"Mobility" <i style="font-weight: normal;">(the ability to move physically)</i> and "Floatability" <i style="font-weight: normal;">(the ability to float)</i>', name: 'mobility_floatability' },
+            { question: '"Mobility" <i style="font-weight: normal;">(the ability to move physically)</i> and "Computation" <i style="font-weight: normal;">(mathematical calculation)</i>', name: 'mobility_computation' },
             { question: 'Please select slightly remote:', name: 'attention_check' }
         ];
 
         const conceptualAbstractnessQuestions = [
-            { question: '"Car": a motor vehicle with room for a small number of passengers', name: 'car_abstractness' },
-            { question: '"Boat": something in which people can travel across water', name: 'boat_abstractness' },
-            { question: '"Laptop": a small portable computer', name: 'laptop_abstractness' },
-            { question: '"Mobility": the ability to move physically', name: 'mobility_abstractness' },
-            { question: '"Floatability": the ability to float (float: If something or someone is floating in a liquid, they are in the liquid, on or just below the surface, and are being supported by it.)', name: 'floatability_abstractness' },
-            { question: '"Computation": mathematical calculation', name: 'computation_abstractness' }
+            { question: 'Car <i style="font-weight: normal;"> (a motor vehicle with room for a small number of passengers)</i>', name: 'car_abstractness' },
+            { question: 'Boat <i style="font-weight: normal;">(something in which people can travel across water)</i>', name: 'boat_abstractness' },
+            { question: 'Computer <i style="font-weight: normal;">(an electronic machine that can store and deal with large amounts of information)</i>', name: 'computer_abstractness' },
+            { question: 'Mobility<i style="font-weight: normal;"> (the ability to move physically)</i>', name: 'mobility_abstractness' },
+            { question: 'Floatability<i style="font-weight: normal;"> (the ability to float; float: If something or someone is floating in a liquid, they are in the liquid, on or just below the surface, and are being supported by it.)</i>', name: 'floatability_abstractness' },
+            { question: 'Computation <i style="font-weight: normal;"> (mathematical calculation)</i>', name: 'computation_abstractness' }
         ];
 
         const designGoalQuestions = [
-            { question: ' Evaluation 1: "Please design a toy, anything a child (age 5-11) can use to play with, by combining two common concepts in the daily life. The design goal is to help children increase their cognitive ability (Cognitive Ability: the ability to reason, plan, solve problems, think abstractly, comprehend complex ideas, learn quickly and learn from experience)." The goal of this task is', name: 'task1' },
-            { question: 'Evaluation 2: "Please design a toy, anything a child (age 5-11) can use to play with, by combining two common concepts in the daily life. The design goal is to help children to have fun (Have fun: to enjoy oneself and experience pleasure or excitement)." The goal of this task is', name: 'task2' }
+            { question: '"Please design a toy, anything a child (age 5-11) can use to play with, by combining two common concepts in the daily life. <span style="color: #e74c3c;"> The design goal is to help children increase their cognitive ability</span> <i style="font-weight: normal;">(Cognitive Ability: the ability to reason, plan, solve problems, think abstractly, comprehend complex ideas, learn quickly and learn from experience)</i>." <br><br> The goal of the task above is', name: 'task1' },
+            { question: '"Please design a toy, anything a child (age 5-11) can use to play with, by combining two common concepts in the daily life. <span style="color: #e74c3c;"> The design goal is to help children to have fun</span> <i style="font-weight: normal;">(Have fun: to enjoy oneself and experience pleasure or excitement)</i>." <br><br> The goal of the task above is', name: 'task2' }
         ];
 
         const distanceOptions = ['Very Near', 'Moderately Near', 'Slightly Near', 'Neither Near nor Remote', 'Slightly Remote', 'Moderately Remote', 'Very Remote'];
@@ -246,26 +320,30 @@
         const goalOptions = ['Very Utilitarian', 'Moderately Utilitarian', 'Slightly Utilitarian', 'Neither Utilitarian nor Hedonic', 'Slightly Hedonic', 'Moderately Hedonic', 'Very Hedonic'];
 
         window.onload = function () {
-            const conceptualDistanceHTML = shuffleArray([...conceptualDistanceQuestions])
+            // Shuffle the questions
+            const shuffledDistanceQuestions = shuffleArray([...conceptualDistanceQuestions]);
+            const shuffledAbstractnessQuestions = shuffleArray([...conceptualAbstractnessQuestions]);
+            const shuffledDesignGoalQuestions = shuffleArray([...designGoalQuestions]);
+
+            const conceptualDistanceHTML = shuffledDistanceQuestions
                 .map(q => createQuestionHTML(q.question, distanceOptions, q.name))
                 .join('');
             document.getElementById('conceptualDistanceQuestions').innerHTML = conceptualDistanceHTML;
 
-            const conceptualAbstractnessHTML = shuffleArray([...conceptualAbstractnessQuestions])
+            const conceptualAbstractnessHTML = shuffledAbstractnessQuestions
                 .map(q => createQuestionHTML(q.question, abstractnessOptions, q.name))
                 .join('');
             document.getElementById('conceptualAbstractnessQuestions').innerHTML = conceptualAbstractnessHTML;
 
-            const designGoalHTML = shuffleArray([...designGoalQuestions])
+            const designGoalHTML = shuffledDesignGoalQuestions
                 .map(q => createQuestionHTML(q.question, goalOptions, q.name))
                 .join('');
             document.getElementById('designGoalQuestions').innerHTML = designGoalHTML;
 
             document.getElementById('surveyButton').onclick = submitSurvey;
-            startTime = new Date().toISOString(); // Set start time when page loads
-            sessionId = generateSessionId(); // Generate session ID when page loads
+            startTime = new Date().toISOString();
+            sessionId = generateSessionId();
         };
-
         function generateSessionId() {
             const timestamp = Date.now().toString(36);
             const randomStr = Math.random().toString(36).substring(2, 7);
@@ -317,7 +395,7 @@
 
             console.log("Submitting data:", surveyData);
 
-            database.ref('pretest-v4').child(sessionId).set(surveyData)
+            database.ref('pretest-v5').child(sessionId).set(surveyData)
                 .then(() => {
                     console.log("Document written with ID: ", sessionId);
                     document.getElementById('surveyPage').style.display = 'none';

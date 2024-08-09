@@ -4,58 +4,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Idea Annotation Interface</title>
+    <title>Toy Design Idea Evaluation</title>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             max-width: 800px;
             margin: 0 auto;
+            padding: 10px;
+            background-color: #f0f8ff;
+            color: #333;
+            line-height: 1.4;
+        }
+
+        .instructions,
+        .welcome-page,
+        .end-page {
+            background-color: #ffffff;
             padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .end-page {
+            text-align: center;
+        }
+
+        .welcome-page h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+
+        .main-task {
+            display: flex;
+            flex-direction: column;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        #ideaProgress {
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            font-size: 1em;
+            color: #2c3e50;
         }
 
         .idea-container {
-            background-color: #f0f0f0;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
+            background-color: #e8f4f8;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-height: 150px;
+            overflow-y: auto;
+            font-size: 0.9em;
+        }
+
+        #ratingScales {
+            overflow-y: auto;
+            flex-grow: 1;
+            margin-bottom: 15px;
         }
 
         .rating-scale {
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
             margin-bottom: 10px;
+            background-color: #f9f9f9;
+            padding: 8px;
+            border-radius: 8px;
         }
 
-        .rating-scale input[type="range"] {
+        .scale-label {
+            width: 20%;
+            font-size: 0.8em;
+            color: #555;
+        }
+
+        .scale-label.left {
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .scale-label.right {
+            text-align: left;
+            padding-left: 10px;
+        }
+
+        .rating-options {
+            display: flex;
+            justify-content: space-between;
             width: 60%;
+        }
+
+        .rating-options label {
+            display: inline-block;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .rating-options input[type="radio"] {
+            opacity: 0;
+            position: absolute;
+        }
+
+        .radio-circle {
+            display: block;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            border: 2px solid #3498db;
+            transition: all 0.3s ease;
+        }
+
+        .rating-options input[type="radio"]:checked+.radio-circle {
+            background-color: #3498db;
+            border-color: #3498db;
         }
 
         .navigation {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            padding: 10px 0 0 0;
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+            padding: 8px 15px;
+            font-size: 14px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+
+        #prolificId {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #showInstructionsBtn {
+            margin-bottom: 10px;
+        }
+
+        #instructionsModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        @media (max-height: 600px) {
+            .modal-content {
+                margin: 10px auto;
+                max-height: 95vh;
+            }
         }
     </style>
 </head>
 
 <body>
-    <h1>Idea Annotation Interface</h1>
-    <div class="idea-container">
-        <h2>Idea <span id="ideaNumber">1</span></h2>
-        <p id="ideaText"></p>
+    <div class="welcome-page" id="welcomePage">
+        <h1>Toy Design Idea Evaluation</h1>
+        <div class="instructions">
+            <p>Welcome to our toy design idea evaluation. The ideas you'll be reviewing were submitted in response to
+                the following requirement:</p>
+            <p><em>"Please design a toy, anything a child (age 5-11) can use to play with"</em></p>
+            <p>For each idea, please provide an evaluation based on six dimensions: originality innovativeness, novelty,
+                practicality, effectiveness, usefulness. Rate each dimension on a
+                scale of 1-7, where 1 is the lowest score and 7 is the highest.</p>
+            <p>⚠️ <span style="font-weight: bold; color: #e74c3c;"> Please do not close or refresh this page once you
+                    begin.</span> Doing so will terminate your session, and you'll need to start over from the
+                beginning.</p>
+            <h3>Evaluation Guidelines:</h3>
+            <ul style="list-style-type:none;">
+                <li>1️⃣ Focus on the core idea itself, disregarding differences in English proficiency.</li>
+                <li>2️⃣ Do not consider potential production costs for the toy in your evaluation.</li>
+                <li>3️⃣ Provide thorough and objective evaluations for each dimension.</li>
+                <li>4️⃣ Use the full range of the 1-7 scale as appropriate.</li>
+            </ul>
+            <p>🙏 Your careful assessment is crucial for this process and <span
+                    style="font-weight: bold; color: #e74c3c;">will determine
+                    the ultimate payment for the idea submitter</span>. We appreciate your time and expertise in
+                evaluating these toy design ideas.</p>
+        </div>
+        <div class="center-content">
+            <input type="text" id="prolificId" placeholder="Enter your Prolific ID" required>
+            <button id="startButton">Start Task</button>
+        </div>
     </div>
-    <div id="ratingScales"></div>
-    <div class="navigation">
-        <button id="prevButton" onclick="showPreviousIdea()">Previous</button>
-        <button id="nextButton" onclick="showNextIdea()">Next</button>
+
+    <div class="main-task" id="mainTask" style="display: none;">
+        <button id="showInstructionsBtn">Show Instructions</button>
+        <div id="ideaProgress"></div>
+        <div class="idea-container">
+            <p id="ideaText"></p>
+        </div>
+        <div id="ratingScales"></div>
+        <div class="navigation">
+            <button id="prevButton" onclick="showPreviousIdea()">Previous</button>
+            <button id="nextButton" onclick="showNextIdea()">Next</button>
+        </div>
+    </div>
+
+    <div id="instructionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Instructions</h2>
+            <p>The ideas you'll be reviewing were submitted in response to the following requirement:</p>
+            <p><em>"Please design a toy, anything a child (age 5-11) can use to play with"</em></p>
+            <p>For each idea, please provide an evaluation based on six dimensions: originality innovativeness, novelty,
+                practicality, effectiveness, usefulness. Rate each dimension on a
+                scale of 1-7, where 1 is the lowest score and 7 is the highest.</p>
+            <p>⚠️ <span style="font-weight: bold; color: #e74c3c;"> Please do not close or refresh this page once you
+                    begin.</span> Doing so will terminate your session, and you'll need to start over from the
+                beginning.</p>
+            <h3>Evaluation Guidelines:</h3>
+            <ul style="list-style-type:none;">
+                <li>1️⃣ Focus on the core idea itself, disregarding differences in English proficiency.</li>
+                <li>2️⃣ Do not consider potential production costs for the toy in your evaluation.</li>
+                <li>3️⃣ Provide thorough and objective evaluations for each dimension.</li>
+                <li>4️⃣ Use the full range of the 1-7 scale as appropriate.</li>
+            </ul>
+            <p>🙏 Your careful assessment is crucial for this process and <span
+                    style="font-weight: bold; color: #e74c3c;">will determine the ultimate payment for the
+                    idea submitter</span>. We appreciate your time and expertise in evaluating these toy design ideas.
+            </p>
+        </div>
+    </div>
+
+    <div class="end-page" id="endPage" style="display: none;">
+        <h2>Thank you for your participation!</h2>
+        <p>Your contribution is greatly appreciated. Here is your completion code:</p>
+        <h3>XXXXXX</h3>
     </div>
 
     <script>
@@ -75,6 +318,10 @@
 
         let ideas = [];
         let currentIdeaIndex = 0;
+        let sessionId = '';
+        let prolificId = '';
+        let seed; // Declare seed as a global variable
+
 
         const scales = [
             { name: 'originality', label: 'Original' },
@@ -85,23 +332,72 @@
             { name: 'usefulness', label: 'Useful' }
         ];
 
+        function generateSessionId() {
+            const timestamp = Date.now().toString(36);
+            const randomStr = Math.random().toString(36).substring(2, 7);
+            return `${timestamp}-${randomStr}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const startButton = document.getElementById('startButton');
+            const prolificIdInput = document.getElementById('prolificId');
+            const welcomePage = document.getElementById('welcomePage');
+            const mainTask = document.getElementById('mainTask');
+            const showInstructionsBtn = document.getElementById('showInstructionsBtn');
+            const instructionsModal = document.getElementById('instructionsModal');
+            const closeBtn = document.querySelector('.close');
+
+            startButton.addEventListener('click', () => {
+                if (prolificIdInput.value.trim() !== '') {
+                    prolificId = prolificIdInput.value.trim();
+                    sessionId = generateSessionId();
+                    welcomePage.style.display = 'none';
+                    mainTask.style.display = 'block';
+                    loadCSV();
+                } else {
+                    alert('Please enter your Prolific ID before starting the task.');
+                }
+            });
+
+            showInstructionsBtn.addEventListener('click', () => {
+                instructionsModal.style.display = 'block';
+            });
+
+            closeBtn.addEventListener('click', () => {
+                instructionsModal.style.display = 'none';
+            });
+
+            window.addEventListener('click', (event) => {
+                if (event.target == instructionsModal) {
+                    instructionsModal.style.display = 'none';
+                }
+            });
+        });
+
         function createRatingScales() {
             const container = document.getElementById('ratingScales');
             scales.forEach(scale => {
                 const div = document.createElement('div');
                 div.className = 'rating-scale';
                 div.innerHTML = `
-                    <span>Not at all ${scale.label}</span>
-                    <input type="range" id="${scale.name}" name="${scale.name}" min="1" max="7" value="4">
-                    <span>Very ${scale.label}</span>
-                    <span id="${scale.name}Value">4</span>
+                    <span class="scale-label left">Not at all ${scale.label}</span>
+                    <div class="rating-options">
+                        ${[1, 2, 3, 4, 5, 6, 7].map(value => `
+                            <label>
+                                <input type="radio" name="${scale.name}" value="${value}">
+                                <span class="radio-circle"></span>
+                            </label>
+                        `).join('')}
+                    </div>
+                    <span class="scale-label right">Very ${scale.label}</span>
                 `;
                 container.appendChild(div);
 
-                const input = div.querySelector(`#${scale.name}`);
-                const valueSpan = div.querySelector(`#${scale.name}Value`);
-                input.addEventListener('input', () => {
-                    valueSpan.textContent = input.value;
+                const radioButtons = div.querySelectorAll(`input[name="${scale.name}"]`);
+                radioButtons.forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        // No need to update opacity or show selected value
+                    });
                 });
             });
         }
@@ -115,7 +411,7 @@
                     return response.text();
                 })
                 .then(data => {
-                    console.log('CSV data loaded:', data); // Log the loaded data
+                    console.log('CSV data loaded:', data);
                     if (!data.trim()) {
                         throw new Error('CSV file is empty');
                     }
@@ -131,7 +427,19 @@
                     if (ideas.length === 0) {
                         throw new Error('No valid ideas found in CSV');
                     }
+
+                    // Generate a random seed based on the session ID
+                    seed = sessionId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+                    // Fisher-Yates shuffle algorithm with seeded random
+                    for (let i = ideas.length - 1; i > 0; i--) {
+                        const j = Math.floor(seedRandom() * (i + 1));
+                        [ideas[i], ideas[j]] = [ideas[j], ideas[i]];
+                    }
+
+                    createRatingScales();
                     showIdea();
+                    updateProgress();
                 })
                 .catch(error => {
                     console.error('Error loading CSV:', error);
@@ -139,50 +447,110 @@
                 });
         }
 
+        // Seeded random number generator
+        function seedRandom() {
+            seed = (seed * 9301 + 49297) % 233280;
+            return seed / 233280;
+        }
+
         function showIdea() {
             const idea = ideas[currentIdeaIndex];
-            document.getElementById('ideaNumber').textContent = currentIdeaIndex + 1;
             document.getElementById('ideaText').textContent = idea.idea;
             document.getElementById('prevButton').disabled = currentIdeaIndex === 0;
-            document.getElementById('nextButton').disabled = currentIdeaIndex === ideas.length - 1;
+            document.getElementById('nextButton').disabled = false;
+            document.getElementById('nextButton').textContent = currentIdeaIndex === ideas.length - 1 ? 'Finish' : 'Next';
+
+            // Reset all radio buttons
+            scales.forEach(scale => {
+                const radioButtons = document.querySelectorAll(`input[name="${scale.name}"]`);
+                radioButtons.forEach(radio => radio.checked = false);
+            });
+
+            // Load existing ratings if available
+            loadExistingRatings();
+
+            updateProgress();
+        }
+
+        function loadExistingRatings() {
+            const ideaRef = database.ref(`pilotrating-v1/${sessionId}/Ideas/idea-${currentIdeaIndex + 1}/rating`);
+            ideaRef.once('value').then((snapshot) => {
+                const ratings = snapshot.val();
+                if (ratings) {
+                    scales.forEach(scale => {
+                        const radio = document.querySelector(`input[name="${scale.name}"][value="${ratings[scale.name]}"]`);
+                        if (radio) {
+                            radio.checked = true;
+                        }
+                    });
+                }
+            });
+        }
+
+        function updateProgress() {
+            const progressElement = document.getElementById('ideaProgress');
+            progressElement.textContent = `Progress: ${currentIdeaIndex + 1} / ${ideas.length}`;
         }
 
         function showNextIdea() {
-            saveRatings();
-            if (currentIdeaIndex < ideas.length - 1) {
-                currentIdeaIndex++;
-                showIdea();
+            if (saveRatings()) {
+                if (currentIdeaIndex < ideas.length - 1) {
+                    currentIdeaIndex++;
+                    showIdea();
+                } else {
+                    showEndPage();
+                }
             }
         }
 
         function showPreviousIdea() {
-            saveRatings();
-            if (currentIdeaIndex > 0) {
-                currentIdeaIndex--;
-                showIdea();
+            if (saveRatings()) {
+                if (currentIdeaIndex > 0) {
+                    currentIdeaIndex--;
+                    showIdea();
+                }
             }
         }
 
         function saveRatings() {
             const idea = ideas[currentIdeaIndex];
             const ratings = {};
+            let allRated = true;
+
             scales.forEach(scale => {
-                ratings[scale.name] = document.getElementById(scale.name).value;
+                const selectedRadio = document.querySelector(`input[name="${scale.name}"]:checked`);
+                if (selectedRadio) {
+                    ratings[scale.name] = selectedRadio.value;
+                } else {
+                    allRated = false;
+                }
             });
 
-            const data = {
-                uniqueIndex: idea.uniqueIndex,
-                idea: idea.idea,
-                ratings: ratings
-            };
+            if (!allRated) {
+                alert('Please rate all dimensions before proceeding.');
+                return false;
+            }
 
-            database.ref('pilotrating-v1').push(data)
-                .then(() => console.log('Ratings saved successfully'))
-                .catch(error => console.error('Error saving ratings:', error));
+            const sessionRef = database.ref(`pilotrating-v1/${sessionId}`);
+            sessionRef.update({
+                ProlificId: prolificId,
+                UniqueIndex: sessionId
+            });
+
+            const ideaRef = sessionRef.child(`Ideas/idea-${currentIdeaIndex + 1}`);
+            ideaRef.update({
+                'idea-content': idea.idea,
+                'uniqueIndex': idea.uniqueIndex,
+                rating: ratings
+            });
+
+            return true;
         }
 
-        createRatingScales();
-        loadCSV();
+        function showEndPage() {
+            document.getElementById('mainTask').style.display = 'none';
+            document.getElementById('endPage').style.display = 'block';
+        }
     </script>
 </body>
 

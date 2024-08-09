@@ -100,14 +100,15 @@
         }
 
         function loadCSV() {
-            fetch('pilotidea-v1.csv')
+            fetch('https://hujinya2020.github.io/ideation/pilotidea-v1.csv')
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error(`HTTP error! status: ${response.status}`);
                     }
                     return response.text();
                 })
                 .then(data => {
+                    console.log('CSV data loaded:', data); // Log the loaded data
                     const rows = data.split('\n').slice(1);
                     ideas = rows.map(row => {
                         const [uniqueIndex, idea] = row.split(',');

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,32 +14,38 @@
             margin: 0 auto;
             padding: 20px;
         }
+
         .idea-container {
             background-color: #f0f0f0;
             padding: 20px;
             margin-bottom: 20px;
             border-radius: 5px;
         }
+
         .rating-scale {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
         }
+
         .rating-scale input[type="range"] {
             width: 60%;
         }
+
         .navigation {
             display: flex;
             justify-content: space-between;
             margin-top: 20px;
         }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
         }
     </style>
 </head>
+
 <body>
     <h1>Idea Annotation Interface</h1>
     <div class="idea-container">
@@ -109,11 +116,21 @@
                 })
                 .then(data => {
                     console.log('CSV data loaded:', data); // Log the loaded data
+                    if (!data.trim()) {
+                        throw new Error('CSV file is empty');
+                    }
                     const rows = data.split('\n').slice(1);
                     ideas = rows.map(row => {
                         const [uniqueIndex, idea] = row.split(',');
+                        if (!idea) {
+                            console.warn(`Warning: Empty idea for index ${uniqueIndex}`);
+                            return null;
+                        }
                         return { uniqueIndex, idea: idea.replace(/^"|"$/g, '') };
-                    });
+                    }).filter(Boolean);
+                    if (ideas.length === 0) {
+                        throw new Error('No valid ideas found in CSV');
+                    }
                     showIdea();
                 })
                 .catch(error => {
@@ -168,4 +185,5 @@
         loadCSV();
     </script>
 </body>
+
 </html>

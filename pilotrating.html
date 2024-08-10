@@ -138,7 +138,7 @@
         }
 
         button {
-            padding: 8px 15px;
+            padding: 12px 15px;
             font-size: 14px;
             background-color: #3498db;
             color: white;
@@ -253,7 +253,7 @@
         </div>
         <div class="center-content">
             <input type="text" id="prolificId" placeholder="Enter your Prolific ID" required>
-            <button id="startButton">Start Task</button>
+            <button id="startButton" disabled>Start Task (20s)</button>
         </div>
     </div>
 
@@ -298,7 +298,8 @@
 
     <div class="end-page" id="endPage" style="display: none;">
         <h2>Thank you for your participation!</h2>
-        <p>Your contribution is greatly appreciated. Here is your completion code: C1DJ71Z8</p>
+        <p>Your contribution is greatly appreciated. Here is your completion code: <span
+                style="font-weight: bold">C1DJ71Z8</span></p>
     </div>
 
     <script>
@@ -347,6 +348,17 @@
             const instructionsModal = document.getElementById('instructionsModal');
             const closeBtn = document.querySelector('.close');
 
+            let countdown = 20;
+            const timer = setInterval(() => {
+                countdown--;
+                startButton.textContent = `Start Task (${countdown}s)`;
+                if (countdown === 0) {
+                    clearInterval(timer);
+                    startButton.textContent = 'Start Task';
+                    startButton.disabled = false;
+                }
+            }, 1000);
+
             startButton.addEventListener('click', () => {
                 if (prolificIdInput.value.trim() !== '') {
                     prolificId = prolificIdInput.value.trim();
@@ -358,6 +370,10 @@
                 } else {
                     alert('Please enter your Prolific ID before starting the task.');
                 }
+            });
+
+            prolificIdInput.addEventListener('input', () => {
+                startButton.disabled = prolificIdInput.value.trim() === '' || countdown > 0;
             });
 
             showInstructionsBtn.addEventListener('click', () => {

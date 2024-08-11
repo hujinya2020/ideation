@@ -222,6 +222,21 @@
                 max-height: 95vh;
             }
         }
+
+        .emphasis-box {
+            border: 2px solid #3498db;
+            /* Border color */
+            border-radius: 10px;
+            /* Rounded corners */
+            padding: 15px;
+            /* Padding inside the box */
+            margin-top: 20px;
+            /* Margin at the top */
+            background-color: #ffffff;
+            /* Background color inside the box */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Shadow effect */
+        }
     </style>
 </head>
 
@@ -229,27 +244,26 @@
     <div class="welcome-page" id="welcomePage">
         <h1>Toy Design Idea Evaluation</h1>
         <div class="instructions">
-            <p>Welcome to our toy design idea evaluation. The 322 ideas you'll be reviewing were submitted in response
-                to
-                the following requirement:</p>
+            <p>Welcome to our toy design idea evaluation session. You will be assessing approximately 20 concepts that
+                were developed based on the specific design requirements provided:</p>
             <p><em>"Please design a toy, anything a child (age 5-11) can use to play with"</em></p>
-            <p>For each idea, please provide an evaluation based on six dimensions: originality innovativeness, novelty,
-                practicality, effectiveness, and usefulness. Rate each dimension on a
-                scale of 1-7, where 1 is the lowest score and 7 is the highest.</p>
+            <h3>Evaluation Guidelines:</h3>
+            <ul>
+                <li>Evaluate each design concept across six dimensions: novelty, originality, innovativeness,
+                    practicality, effectiveness, and usefulness. Rate each dimension on a scale from 1 to 7. </li>
+                <li>Please aim
+                    for <span style="font-weight: bold; color: #e74c3c;">more polarized ratings</span>: assign a 1 for
+                    ideas that are below average and a 7 for
+                    those that are exceptionally creative or effective.</li>
+                <li>Focus solely on the <span style="font-weight: bold; color: #e74c3c;">intrinsic qualities</span> of
+                    each design, disregarding the English
+                    proficiency of the presenter.</li>
+                <li>Maintain consistency</span> in your evaluations. For instance, if you think a boat-shaped car is not
+                    novel, ensure you rate all similar concepts with the same criteria.</li>
+            </ul>
             <p>⚠️ <span style="font-weight: bold; color: #e74c3c;"> Please do not close or refresh this page once you
                     begin.</span> Doing so will terminate your session, and you'll need to start over from the
                 beginning.</p>
-            <h3>Evaluation Guidelines:</h3>
-            <ul style="list-style-type:none;">
-                <li>1️⃣ Focus on the core idea itself, disregarding differences in English proficiency.</li>
-                <li>2️⃣ Do not consider potential production costs for the toy in your evaluation.</li>
-                <li>3️⃣ Provide thorough and objective evaluations for each dimension.</li>
-                <li>4️⃣ Use the full range of the 1-7 scale as appropriate.</li>
-            </ul>
-            <p>🙏 Your careful assessment is crucial for this process and <span
-                    style="font-weight: bold; color: #e74c3c;">will determine
-                    the payment for the idea submitter</span>. We appreciate your time and expertise in
-                evaluating these toy design ideas.</p>
         </div>
         <div class="center-content">
             <input type="text" id="prolificId" placeholder="Enter your Prolific ID" required>
@@ -274,32 +288,33 @@
         <div class="modal-content">
             <span class="close">&times;</span>
             <h2>Instructions</h2>
-            <p>The 322 ideas you'll be reviewing were submitted in response to the following requirement:</p>
+            <p>Welcome to our toy design idea evaluation session. You will be assessing approximately 20 concepts that
+                were developed based on the specific design requirements provided:</p>
             <p><em>"Please design a toy, anything a child (age 5-11) can use to play with"</em></p>
-            <p>For each idea, please provide an evaluation based on six dimensions: originality innovativeness, novelty,
-                practicality, effectiveness, and usefulness. Rate each dimension on a
-                scale of 1-7, where 1 is the lowest score and 7 is the highest.</p>
+            <h3>Evaluation Guidelines:</h3>
+            <ul>
+                <li>Evaluate each design concept across six dimensions: novelty, originality, innovativeness,
+                    practicality, effectiveness, and usefulness. Rate each dimension on a scale from 1 to 7. </li>
+                <li>Please aim
+                    for <span style="font-weight: bold; color: #e74c3c;">more polarized ratings</span>: assign a 1 for
+                    ideas that are below average and a 7 for
+                    those that are exceptionally creative or effective.</li>
+                <li>Focus solely on the <span style="font-weight: bold; color: #e74c3c;">intrinsic qualities</span> of
+                    each design, disregarding the English
+                    proficiency of the presenter.</li>
+                <li>Maintain consistency</span> in your evaluations. For instance, if a boat-shaped car is
+                    deemed uncreative, ensure you rate all similar concepts with the same criteria.</li>
+            </ul>
             <p>⚠️ <span style="font-weight: bold; color: #e74c3c;"> Please do not close or refresh this page once you
                     begin.</span> Doing so will terminate your session, and you'll need to start over from the
                 beginning.</p>
-            <h3>Evaluation Guidelines:</h3>
-            <ul style="list-style-type:none;">
-                <li>1️⃣ Focus on the core idea itself, disregarding differences in English proficiency.</li>
-                <li>2️⃣ Do not consider potential production costs for the toy in your evaluation.</li>
-                <li>3️⃣ Provide thorough and objective evaluations for each dimension.</li>
-                <li>4️⃣ Use the full range of the 1-7 scale as appropriate.</li>
-            </ul>
-            <p>🙏 Your careful assessment is crucial for this process and <span
-                    style="font-weight: bold; color: #e74c3c;">will determine the payment for the
-                    idea submitter</span>. We appreciate your time and expertise in evaluating these toy design ideas.
-            </p>
         </div>
     </div>
 
     <div class="end-page" id="endPage" style="display: none;">
         <h2>Thank you for your participation!</h2>
         <p>Your contribution is greatly appreciated. Here is your completion code: <span
-                style="font-weight: bold">C11QA11K</span></p>
+                style="font-weight: bold">C1DJ71Z8</span></p>
     </div>
 
     <script>
@@ -325,12 +340,18 @@
         let startTime, endTime;
 
         const scales = [
+            { name: 'novelty', label: 'Novel' },
             { name: 'originality', label: 'Original' },
             { name: 'innovativeness', label: 'Innovative' },
-            { name: 'novelty', label: 'Novel' },
             { name: 'practicality', label: 'Practical' },
             { name: 'effectiveness', label: 'Effective' },
             { name: 'usefulness', label: 'Useful' }
+        ];
+
+        const conditionIDs = [
+            'AINLUT', 'AINHUT', 'AIRLUT', 'AIRHUT', 'AIRLHD', 'AIRHHD',
+            'HMNHUT', 'HMNLUT', 'HMRHUT', 'HMNLHD', 'HMNHHD', 'HMRLHD',
+            'HMRHHD', 'AINHHD', 'HMRLUT', 'AINLHD'
         ];
 
         function generateSessionId() {
@@ -348,7 +369,11 @@
             const instructionsModal = document.getElementById('instructionsModal');
             const closeBtn = document.querySelector('.close');
 
-            let countdown = 1; // LATER -> 20
+            const condition = getConditionFromURL();
+            const targetConditionID = conditionIDs[condition - 1];
+            updateRequirementContent(targetConditionID); // Update the requirement text dynamically when the page loads
+
+            let countdown = 20; // LATER
             const timer = setInterval(() => {
                 countdown--;
                 startButton.textContent = `Start Task (${countdown}s)`;
@@ -366,7 +391,7 @@
                     welcomePage.style.display = 'none';
                     mainTask.style.display = 'block';
                     startTime = new Date();
-                    loadCSV();
+                    loadCSV(); // Load the ideas after clicking start
                 } else {
                     alert('Please enter your Prolific ID before starting the task.');
                 }
@@ -391,66 +416,107 @@
             });
         });
 
-        function createRatingScales() {
-            const container = document.getElementById('ratingScales');
-            container.innerHTML = ''; // Clear existing scales
-            scales.forEach(scale => {
-                const div = document.createElement('div');
-                div.className = 'rating-scale';
-                div.innerHTML = `
-                    <span class="scale-label left">Not at all ${scale.label}</span>
-                    <div class="rating-options">
-                        ${[1, 2, 3, 4, 5, 6, 7].map(value => `
-                            <label>
-                                <input type="radio" name="${scale.name}" value="${value}">
-                                <span class="radio-circle"></span>
-                            </label>
-                        `).join('')}
-                    </div>
-                    <span class="scale-label right">Very ${scale.label}</span>
-                `;
-                container.appendChild(div);
-            });
+        function updateRequirementContent(conditionID) {
+            let word1, word2, def1, def2, goal, goalDef;
+            let wordPair = conditionID.substring(2, 4);
+            let designGoal = conditionID.substring(4);
+
+            switch (wordPair) {
+                case 'NL':
+                    word1 = 'Car';
+                    word2 = 'Boat';
+                    def1 = 'a motor vehicle with room for a small number of passengers';
+                    def2 = 'something in which people can travel across water';
+                    break;
+                case 'NH':
+                    word1 = 'Mobility';
+                    word2 = 'Floatability';
+                    def1 = 'the ability to move physically';
+                    def2 = 'the ability to float (float: If something or someone is floating in a liquid, they are in the liquid, on or just below the surface, and are being supported by it.)';
+                    break;
+                case 'RL':
+                    word1 = 'Car';
+                    word2 = 'Computer';
+                    def1 = 'a motor vehicle with room for a small number of passengers';
+                    def2 = 'an electronic machine that can store and deal with large amounts of information';
+                    break;
+                case 'RH':
+                    word1 = 'Mobility';
+                    word2 = 'Computation';
+                    def1 = 'the ability to move physically';
+                    def2 = 'mathematical calculation';
+                    break;
+            }
+
+            goal = designGoal === 'UT' ? 'help children increase their cognitive ability' : 'help children to have fun';
+            goalDef = designGoal === 'UT'
+                ? '<strong>Cognitive Ability</strong>: the ability to reason, plan, solve problems, think abstractly, comprehend complex ideas, learn quickly and learn from experience'
+                : '<strong>Have fun</strong>: to enjoy oneself and experience pleasure or excitement';
+
+            const dynamicRequirementText = `
+    <div class="emphasis-box">
+        <p>Please design <strong>a toy</strong>, anything a child (age 5–11) can use to play with, by combining these two concepts: <strong>${word1}</strong> and <strong>${word2}</strong>. The design goal is to <strong>${goal}</strong>.</p>
+        <ul>
+            <li><strong>${word1}:</strong> ${def1}</li>
+            <li><strong>${word2}:</strong> ${def2}</li>
+            <li>${goalDef}</li>
+        </ul>
+    </div>
+`;
+
+            // Replace the specific instruction sentence dynamically within the welcomePage
+            const welcomeInstructionElement = document.querySelector('.welcome-page .instructions em');
+            if (welcomeInstructionElement) {
+                welcomeInstructionElement.innerHTML = dynamicRequirementText;
+            }
+
+            // Replace the instruction in the instructionsModal as well
+            const modalInstructionElement = document.querySelector('#instructionsModal .modal-content em');
+            if (modalInstructionElement) {
+                modalInstructionElement.innerHTML = dynamicRequirementText;
+            }
+        }
+
+        function getConditionFromURL() {
+            const pathname = window.location.pathname;
+            const match = pathname.match(/pilotrating-(\d+)\.html$/);
+            return match ? parseInt(match[1]) : 1;
+        }
+
+        function generateSessionId() {
+            const timestamp = Date.now().toString(36);
+            const randomStr = Math.random().toString(36).substring(2, 7);
+            return `${timestamp}-${randomStr}`;
         }
 
         function loadCSV() {
-            fetch('https://hujinya2020.github.io/ideation/pilotidea-v1-CN.csv')
+            fetch('https://hujinya2020.github.io/ideation/pilotidea-v1-EN.csv')
                 .then(response => response.text())
                 .then(data => {
-                    console.log('Raw CSV data:', data); // Log raw data for debugging
+                    console.log('Raw CSV data:', data);
                     const rows = data.split('\n').slice(1);
-                    console.log('Number of rows:', rows.length); // Log number of rows
+                    console.log('Number of rows:', rows.length);
 
-                    ideas = rows.map((row, index) => {
-                        // Trim the row to remove any leading/trailing whitespace
+                    const condition = getConditionFromURL();
+                    const targetConditionID = conditionIDs[condition - 1];
+
+                    updateRequirementContent(targetConditionID); // Update the requirement text dynamically
+
+                    ideas = rows.map((row) => {
                         row = row.trim();
-                        if (!row) {
-                            console.log(`Empty row at index ${index}, skipping`);
-                            return null;
-                        }
-
-                        // Use regex to match the CSV format
                         const match = row.match(/^"([^"]+)","(.+)"$/);
                         if (match) {
                             const [, uniqueIndex, idea] = match;
-                            return { uniqueIndex, idea: idea.replace(/""/g, '"').trim() };
-                        } else {
-                            console.log(`Invalid row format at index ${index}: ${row}`);
-                            // Attempt a simple split as a fallback
-                            const parts = row.split('","');
-                            if (parts.length >= 2) {
-                                const uniqueIndex = parts[0].replace(/^"/, '');
-                                const idea = parts.slice(1).join('","').replace(/"$/, '');
+                            const conditionID = uniqueIndex.split('-')[1];
+                            if (conditionID === targetConditionID) {
                                 return { uniqueIndex, idea: idea.replace(/""/g, '"').trim() };
                             }
-                            return null;
                         }
+                        return null;
                     }).filter(Boolean);
 
-                    console.log('Parsed ideas:', ideas); // Log parsed ideas for debugging
-
                     if (ideas.length === 0) {
-                        throw new Error('No valid ideas found in CSV');
+                        throw new Error('No valid ideas found in CSV for the specified condition');
                     }
 
                     seed = sessionId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -469,6 +535,29 @@
                     document.getElementById('ideaText').textContent = 'Error loading ideas. Please check the console for details.';
                 });
         }
+
+        function createRatingScales() {
+            const container = document.getElementById('ratingScales');
+            container.innerHTML = ''; // Clear existing scales
+            scales.forEach(scale => {
+                const div = document.createElement('div');
+                div.className = 'rating-scale';
+                div.innerHTML = `
+                <span class="scale-label left">Not at all ${scale.label}</span>
+                <div class="rating-options">
+                    ${[1, 2, 3, 4, 5, 6, 7].map(value => `
+                        <label>
+                            <input type="radio" name="${scale.name}" value="${value}">
+                            <span class="radio-circle"></span>
+                        </label>
+                    `).join('')}
+                </div>
+                <span class="scale-label right">Very ${scale.label}</span>
+            `;
+                container.appendChild(div);
+            });
+        }
+
         function seedRandom() {
             seed = (seed * 9301 + 49297) % 233280;
             return seed / 233280;
@@ -491,7 +580,7 @@
         }
 
         function loadExistingRatings() {
-            const ideaRef = database.ref(`pilotrating-v1/${sessionId}/Ideas/idea-${currentIdeaIndex + 1}/rating`);
+            const ideaRef = database.ref(`pilotrating-v2/${sessionId}/Ideas/idea-${currentIdeaIndex + 1}/rating`);
             ideaRef.once('value').then((snapshot) => {
                 const ratings = snapshot.val();
                 if (ratings) {
@@ -551,7 +640,7 @@
                 return false;
             }
 
-            const sessionRef = database.ref(`pilotrating-v1/${sessionId}`);
+            const sessionRef = database.ref(`pilotrating-v2/${sessionId}`);
             sessionRef.update({
                 ProlificId: prolificId,
                 UniqueIndex: sessionId
@@ -569,7 +658,7 @@
 
         function saveTimingData() {
             const duration = (endTime - startTime) / 1000; // Duration in seconds
-            const sessionRef = database.ref(`pilotrating-v1/${sessionId}`);
+            const sessionRef = database.ref(`pilotrating-v2/${sessionId}`);
             sessionRef.update({
                 StartTime: startTime.toISOString(),
                 EndTime: endTime.toISOString(),
@@ -587,6 +676,7 @@
             document.getElementById('endPage').insertBefore(timingInfo, document.getElementById('endPage').lastElementChild);
         }
     </script>
+
 </body>
 
 </html>

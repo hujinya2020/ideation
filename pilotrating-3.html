@@ -348,11 +348,7 @@
             { name: 'usefulness', label: 'Useful' }
         ];
 
-        const conditionIDs = [
-            'AINLUT', 'AINHUT', 'AIRLUT', 'AIRHUT', 'AIRLHD', 'AIRHHD',
-            'HMNHUT', 'HMNLUT', 'HMRHUT', 'HMNLHD', 'HMNHHD', 'HMRLHD',
-            'HMRHHD', 'AINHHD', 'HMRLUT', 'AINLHD'
-        ];
+        const conditionIDs = ['NLUT', 'NHUT', 'RLUT', 'RHUT', 'NLHD', 'NHHD', 'RLHD', 'RHHD'];
 
         function generateSessionId() {
             const timestamp = Date.now().toString(36);
@@ -418,8 +414,8 @@
 
         function updateRequirementContent(conditionID) {
             let word1, word2, def1, def2, goal, goalDef;
-            let wordPair = conditionID.substring(2, 4);
-            let designGoal = conditionID.substring(4);
+            let wordPair = conditionID.substring(0, 2);
+            let designGoal = conditionID.substring(2);
 
             switch (wordPair) {
                 case 'NL':
@@ -476,13 +472,11 @@
                 modalInstructionElement.innerHTML = dynamicRequirementText;
             }
         }
-
         function getConditionFromURL() {
             const pathname = window.location.pathname;
             const match = pathname.match(/pilotrating-(\d+)\.html$/);
             return match ? parseInt(match[1]) : 1;
         }
-
         function generateSessionId() {
             const timestamp = Date.now().toString(36);
             const randomStr = Math.random().toString(36).substring(2, 7);
@@ -500,14 +494,14 @@
                     const condition = getConditionFromURL();
                     const targetConditionID = conditionIDs[condition - 1];
 
-                    updateRequirementContent(targetConditionID); // Update the requirement text dynamically
+                    updateRequirementContent(targetConditionID);
 
                     ideas = rows.map((row) => {
                         row = row.trim();
                         const match = row.match(/^"([^"]+)","(.+)"$/);
                         if (match) {
                             const [, uniqueIndex, idea] = match;
-                            const conditionID = uniqueIndex.split('-')[1];
+                            const conditionID = uniqueIndex.split('-')[1].substring(2); // Ignore first two letters
                             if (conditionID === targetConditionID) {
                                 return { uniqueIndex, idea: idea.replace(/""/g, '"').trim() };
                             }
@@ -535,7 +529,6 @@
                     document.getElementById('ideaText').textContent = 'Error loading ideas. Please check the console for details.';
                 });
         }
-
         function createRatingScales() {
             const container = document.getElementById('ratingScales');
             container.innerHTML = ''; // Clear existing scales

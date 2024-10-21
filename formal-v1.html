@@ -995,11 +995,10 @@
 
             <!-- PDF Consent Form -->
             <div style="margin-bottom: 20px; border: 2px solid #3498db; border-radius: 12px; overflow: hidden;">
-                <iframe src="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/hujinya2020/ideation/main/DERC.pdf&embedded=true" 
-        width="100%" 
-        height="400px" 
-        style="border: none;">
-</iframe>
+                <iframe
+                    src="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/hujinya2020/ideation/main/DERC.pdf&embedded=true"
+                    width="100%" height="400px" style="border: none;">
+                </iframe>
             </div>
 
             <div
@@ -1847,7 +1846,7 @@
                     conversationHistory.push({ role: "user", content: userMessage });
 
                     const messages = [
-                        { role: "system", content: "You are a creative assistant to help users design products. Please reply all questions with 100 words. For every idea you provided, please give detailed reasons for that." },
+                        { role: "system", content: "You are a creative assistant to help users design products. Please reply all questions with 100 words. For every idea you provided, please give detailed description for that." },
                         ...conversationHistory
                     ];
 

@@ -263,35 +263,37 @@
                     dimensions: novelty,
                     originality, innovativeness,
                     practicality, effectiveness, and usefulness. Rate each dimension on a scale from 1 to 7.</li>
-                <li><strong>Focus on intrinsic qualities:</strong> Please focus solely on the intrinsic qualities of
-                    each design, disregarding the length of description or English
-                    proficiency.</li>
                 <li><strong>Consistency is key:</strong> Some ideas are included as ground-truth references, and there
                     are duplicate ideas within the task. <span style="color: #e74c3c;">Inconsistent ratings or failure
                         to pass attention checks will
                         result in no payment</span>. Please make sure to maintain the same evaluation criteria
                     throughout.</li>
-                <li><strong>Reference Examples:</strong> To help you calibrate your evaluation, please use the examples below:
+                <li><strong>Reference Examples:</strong> To help you calibrate your evaluation, please use the examples
+                    below:
                 </li>
                 <div>
                     <p><strong>Novelty Score = 1:</strong></p>
                     <ul>
-                        <li>wheels in motion children can adapt ride- on cars to explore their surroundings ,eg a car
-                            that is able to move around</li>
+                        <li>A digital tablet device pairs with a stylus pen for creating custom learning activities.
+                            Parents can generate personalized puzzles, coloring pages, and educational games using
+                            artificial intelligence technology.</li>
                     </ul>
                     <ul>
-                        <li>A mat that the child can walk or jump on to the tune of various child nursery rhymes. That
-                            can pick up speed or slow down at their command.</li>
+                        <li>A two-toned toy car features a specific color arrangement. The vehicle has a black exterior
+                            and white interior, creating a contrasting color scheme.</li>
                     </ul>
                 </div>
                 <div>
                     <p><strong>Novelty Score = 7:</strong></p>
                     <ul>
-                        <li>Botanical Explorer Drone, is controlled through a tablet and can record environmental data,
-                            including temperature and plant life, which is stored and analyzed.</li>
+                        <li>A backpack combines digital technology with physical movement activities. The device uses
+                            motion sensors, lights and a screen to guide children through app-based challenges like
+                            scavenger hunts.</li>
                     </ul>
                     <ul>
-                        <li>Japanese sushi night! Teach little ones there numbers by creating a fun magnetic game board in the shape of a bento box covered in sushi pieces that all represent numbers from 0-10. Each game board piece is a different number in the shape of a piece of sushi. The game board comes with chopsticks for picking up the sushi number pieces and moving them to their correct spot on the bento box game board.</li>
+                        <li>A puzzle box combines digital and physical escape room challenges. Players interact with
+                            virtual rooms through a tablet screen, then solve tangible puzzles after completing each
+                            digital section.</li>
                     </ul>
                 </div>
             </ul>
@@ -339,35 +341,37 @@
                     dimensions: novelty,
                     originality, innovativeness,
                     practicality, effectiveness, and usefulness. Rate each dimension on a scale from 1 to 7.</li>
-                <li><strong>Focus on intrinsic qualities:</strong> Please focus solely on the intrinsic qualities of
-                    each design, disregarding the length of description or English
-                    proficiency.</li>
                 <li><strong>Consistency is key:</strong> Some ideas are included as ground-truth references, and there
                     are duplicate ideas within the task. <span style="color: #e74c3c;">Inconsistent ratings or failure
                         to pass attention checks will
                         result in no payment</span>. Please make sure to maintain the same evaluation criteria
                     throughout.</li>
-                <li><strong>Reference Examples:</strong> To help you calibrate your evaluation, please use the examples below:
+                <li><strong>Reference Examples:</strong> To help you calibrate your evaluation, please use the examples
+                    below:
                 </li>
                 <div>
                     <p><strong>Novelty Score = 1:</strong></p>
                     <ul>
-                        <li>wheels in motion children can adapt ride- on cars to explore their surroundings ,eg a car
-                            that is able to move around</li>
+                        <li>A digital tablet device pairs with a stylus pen for creating custom learning activities.
+                            Parents can generate personalized puzzles, coloring pages, and educational games using
+                            artificial intelligence technology.</li>
                     </ul>
                     <ul>
-                        <li>A mat that the child can walk or jump on to the tune of various child nursery rhymes. That
-                            can pick up speed or slow down at their command.</li>
+                        <li>A two-toned toy car features a specific color arrangement. The vehicle has a black exterior
+                            and white interior, creating a contrasting color scheme.</li>
                     </ul>
                 </div>
                 <div>
                     <p><strong>Novelty Score = 7:</strong></p>
                     <ul>
-                        <li>Botanical Explorer Drone, is controlled through a tablet and can record environmental data,
-                            including temperature and plant life, which is stored and analyzed.</li>
+                        <li>A backpack combines digital technology with physical movement activities. The device uses
+                            motion sensors, lights and a screen to guide children through app-based challenges like
+                            scavenger hunts.</li>
                     </ul>
                     <ul>
-                        <li>Japanese sushi night! Teach little ones there numbers by creating a fun magnetic game board in the shape of a bento box covered in sushi pieces that all represent numbers from 0-10. Each game board piece is a different number in the shape of a piece of sushi. The game board comes with chopsticks for picking up the sushi number pieces and moving them to their correct spot on the bento box game board.</li>
+                        <li>A puzzle box combines digital and physical escape room challenges. Players interact with
+                            virtual rooms through a tablet screen, then solve tangible puzzles after completing each
+                            digital section.</li>
                     </ul>
                 </div>
             </ul>
@@ -485,7 +489,7 @@
         }
 
         function loadXLSX() {
-            fetch('https://hujinya2020.github.io/ideation/formalidea-v1-RH.xlsx')
+            fetch('https://hujinya2020.github.io/ideation/formalidea-v2-RH.xlsx')
                 .then(response => response.arrayBuffer())
                 .then(data => {
                     const workbook = XLSX.read(data, { type: 'array' });
@@ -577,7 +581,7 @@
         }
 
         function loadExistingRatings() {
-            const ideaRef = database.ref(`formalrating-v1/${sessionId}/Ideas/idea-${currentIdeaIndex + 1}/rating`);
+            const ideaRef = database.ref(`formalrating-v2/${sessionId}/Ideas/idea-${currentIdeaIndex + 1}/rating`);
             ideaRef.once('value').then((snapshot) => {
                 const ratings = snapshot.val();
                 if (ratings) {
@@ -637,7 +641,7 @@
                 return false;
             }
 
-            const sessionRef = database.ref(`formalrating-v1/${sessionId}`);
+            const sessionRef = database.ref(`formalrating-v2/${sessionId}`);
             sessionRef.update({
                 ProlificId: prolificId,
                 uniqueIdeaIndex: sessionId
@@ -655,7 +659,7 @@
 
         function saveTimingData() {
             const duration = (endTime - startTime) / 1000; // Duration in seconds
-            const sessionRef = database.ref(`formalrating-v1/${sessionId}`);
+            const sessionRef = database.ref(`formalrating-v2/${sessionId}`);
             sessionRef.update({
                 StartTime: startTime.toISOString(),
                 EndTime: endTime.toISOString(),

@@ -263,9 +263,6 @@
                     dimensions: novelty,
                     originality, innovativeness,
                     practicality, effectiveness, and usefulness. Rate each dimension on a scale from 1 to 7.</li>
-                <li><strong>Focus on intrinsic qualities:</strong>Please focus solely on the intrinsic qualities of
-                    each design, disregarding the length of description or English
-                    proficiency.</li>
                 <li><strong>Consistency is key:</strong> Some ideas are included as ground-truth references, and there
                     are duplicate ideas within the task. <span style="color: #e74c3c;">Inconsistent ratings or failure
                         to pass attention checks will
@@ -276,26 +273,19 @@
                 <div>
                     <p><strong>Novelty Score = 1:</strong></p>
                     <ul>
-                        <li>App based game for car that has to get from A to B to deliver computers or small machines,
-                            learning and play with links in to collect data for re-sale.</li>
+                        <li>A battery-powered car moves independently without external controls. The vehicle operates using internal power sources, allowing children to interact with its autonomous movement patterns.</li>
                     </ul>
                     <ul>
-                        <li>Screens intergrated into the back of car seats that allow you to play games will in the car.
-                            Like a tv in cars, this screen is functional and allows kids to play their games while in
-                            the car</li>
+                        <li>A digital entertainment system designed for car backseats helps children during long trips. The system features a large display screen and artificial intelligence that interacts with young passengers through conversation and activities.</li>
                     </ul>
                 </div>
                 <div>
                     <p><strong>Novelty Score = 7:</strong></p>
                     <ul>
-                        <li>This is about a car that can follow a drawn path on a special mat, that can easily be
-                            wipeable. It uses a low power laser underneath the car, which can read that into movements,
-                            and drive automatically around that path (Or until it reaches the end)</li>
+                        <li>A workstation combines car racing with hands-on building activities. Children construct custom racecars using interchangeable parts and control them on a track through a computer interface that adjusts racing conditions.</li>
                     </ul>
                     <ul>
-                        <li>A computer program that lets the kid be an overseer of a convoy of cars, managing logistics
-                            and sending cars throughout the simulated city. Various objectives and goals will be
-                            presented for managing the cars well - from maintenance to route planning.</li>
+                        <li>A simulation game focuses on managing multiple vehicles across a digital city. Players handle logistics by directing cars, planning routes, scheduling maintenance, and completing objectives related to fleet management.</li>
                     </ul>
                 </div>
             </ul>
@@ -344,9 +334,6 @@
                         dimensions: novelty,
                         originality, innovativeness,
                         practicality, effectiveness, and usefulness. Rate each dimension on a scale from 1 to 7.</li>
-                    <li><strong>Focus on intrinsic qualities:</strong>Please focus solely on the intrinsic qualities of
-                        each design, disregarding the length of description or English
-                        proficiency.</li>
                     <li><strong>Consistency is key:</strong> Some ideas are included as ground-truth references, and there
                         are duplicate ideas within the task. <span style="color: #e74c3c;">Inconsistent ratings or failure
                             to pass attention checks will
@@ -357,26 +344,19 @@
                     <div>
                         <p><strong>Novelty Score = 1:</strong></p>
                         <ul>
-                            <li>App based game for car that has to get from A to B to deliver computers or small machines,
-                                learning and play with links in to collect data for re-sale.</li>
+                            <li>A battery-powered car moves independently without external controls. The vehicle operates using internal power sources, allowing children to interact with its autonomous movement patterns.</li>
                         </ul>
                         <ul>
-                            <li>Screens intergrated into the back of car seats that allow you to play games will in the car.
-                                Like a tv in cars, this screen is functional and allows kids to play their games while in
-                                the car</li>
+                            <li>A digital entertainment system designed for car backseats helps children during long trips. The system features a large display screen and artificial intelligence that interacts with young passengers through conversation and activities.</li>
                         </ul>
                     </div>
                     <div>
                         <p><strong>Novelty Score = 7:</strong></p>
                         <ul>
-                            <li>This is about a car that can follow a drawn path on a special mat, that can easily be
-                                wipeable. It uses a low power laser underneath the car, which can read that into movements,
-                                and drive automatically around that path (Or until it reaches the end)</li>
+                            <li>A workstation combines car racing with hands-on building activities. Children construct custom racecars using interchangeable parts and control them on a track through a computer interface that adjusts racing conditions.</li>
                         </ul>
                         <ul>
-                            <li>A computer program that lets the kid be an overseer of a convoy of cars, managing logistics
-                                and sending cars throughout the simulated city. Various objectives and goals will be
-                                presented for managing the cars well - from maintenance to route planning.</li>
+                            <li>A simulation game focuses on managing multiple vehicles across a digital city. Players handle logistics by directing cars, planning routes, scheduling maintenance, and completing objectives related to fleet management.</li>
                         </ul>
                     </div>
                 </ul>
@@ -494,7 +474,7 @@
         }
 
         function loadXLSX() {
-            fetch('https://hujinya2020.github.io/ideation/formalidea-v1-RL.xlsx')
+            fetch('https://hujinya2020.github.io/ideation/formalidea-v2-RL.xlsx')
                 .then(response => response.arrayBuffer())
                 .then(data => {
                     const workbook = XLSX.read(data, { type: 'array' });
@@ -586,7 +566,7 @@
         }
 
         function loadExistingRatings() {
-            const ideaRef = database.ref(`formalrating-v1/${sessionId}/Ideas/idea-${currentIdeaIndex + 1}/rating`);
+            const ideaRef = database.ref(`formalrating-v2/${sessionId}/Ideas/idea-${currentIdeaIndex + 1}/rating`);
             ideaRef.once('value').then((snapshot) => {
                 const ratings = snapshot.val();
                 if (ratings) {
@@ -646,7 +626,7 @@
                 return false;
             }
 
-            const sessionRef = database.ref(`formalrating-v1/${sessionId}`);
+            const sessionRef = database.ref(`formalrating-v2/${sessionId}`);
             sessionRef.update({
                 ProlificId: prolificId,
                 uniqueIdeaIndex: sessionId
@@ -664,7 +644,7 @@
 
         function saveTimingData() {
             const duration = (endTime - startTime) / 1000; // Duration in seconds
-            const sessionRef = database.ref(`formalrating-v1/${sessionId}`);
+            const sessionRef = database.ref(`formalrating-v2/${sessionId}`);
             sessionRef.update({
                 StartTime: startTime.toISOString(),
                 EndTime: endTime.toISOString(),

@@ -263,9 +263,6 @@
                     dimensions: novelty,
                     originality, innovativeness,
                     practicality, effectiveness, and usefulness. Rate each dimension on a scale from 1 to 7.</li>
-                <li><strong>Focus on intrinsic qualities:</strong> Please focus solely on the intrinsic qualities of
-                    each design, disregarding the length of description or English
-                    proficiency.</li>
                 <li><strong>Consistency is key:</strong> Some ideas are included as ground-truth references, and there
                     are duplicate ideas within the task. <span style="color: #e74c3c;">Inconsistent ratings or failure
                         to pass attention checks will
@@ -277,26 +274,25 @@
                 <div>
                     <p><strong>Novelty Score = 1:</strong></p>
                     <ul>
-                        <li>A rubber duck that can be rolled around on the surface but also floats in the water when the
-                            wheels are retracted.</li>
+                        <li>A remote-controlled toy transforms between a boat and walking figure. It features movable
+                            plastic rudders and voice capabilities, along with LED lights that can display different
+                            colors through remote operation.</li>
                     </ul>
                     <ul>
-                        <li>An airplane toy that can be controlled via your phone or a remote control that flies around,
-                            and can land on water.</li>
+                        <li>A children's scooter connects to a smartphone app for parental supervision. Parents can
+                            control and monitor the scooter's movement through their phone while their child rides.</li>
                     </ul>
                 </div>
                 <div>
                     <p><strong>Novelty Score = 7:</strong></p>
                     <ul>
-                        <li>Design a float-plane with a spinning propeller. Allow a vinegar/bicarb solution to be placed
-                            in the hull section of the plane, with a hole at the back allow the solution to expel and
-                            move the plane in the bathtub.</li>
+                        <li>A modular building set creates floating maze structures in water. The pieces connect to form
+                            customizable castle-like designs that can be used both in water and on land with attachable
+                            wheels.</li>
                     </ul>
                     <ul>
-                        <li>Extremely floatable ball. Made of scientifically tested materials of names no one can
-                            pronounce, the ball is aggressively buoyant and will fly out of the water at high speeds if
-                            held underneath. Noses were broken during the testing of this product but it was so fun it
-                            was signed off for production.</li>
+                        <li>A specialized ball designed with highly buoyant materials for water play. When pushed
+                            underwater, the ball rapidly shoots upward due to its extreme flotation properties.</li>
                     </ul>
                 </div>
             </ul>
@@ -344,9 +340,6 @@
                     dimensions: novelty,
                     originality, innovativeness,
                     practicality, effectiveness, and usefulness. Rate each dimension on a scale from 1 to 7.</li>
-                <li><strong>Focus on intrinsic qualities:</strong> Please focus solely on the intrinsic qualities of
-                    each design, disregarding the length of description or English
-                    proficiency.</li>
                 <li><strong>Consistency is key:</strong> Some ideas are included as ground-truth references, and there
                     are duplicate ideas within the task. <span style="color: #e74c3c;">Inconsistent ratings or failure
                         to pass attention checks will
@@ -495,7 +488,7 @@
         }
 
         function loadXLSX() {
-            fetch('https://hujinya2020.github.io/ideation/formalidea-v1-NH.xlsx')
+            fetch('https://hujinya2020.github.io/ideation/formalidea-v2-NH.xlsx')
                 .then(response => response.arrayBuffer())
                 .then(data => {
                     const workbook = XLSX.read(data, { type: 'array' });
@@ -587,7 +580,7 @@
         }
 
         function loadExistingRatings() {
-            const ideaRef = database.ref(`formalrating-v1/${sessionId}/Ideas/idea-${currentIdeaIndex + 1}/rating`);
+            const ideaRef = database.ref(`formalrating-v2/${sessionId}/Ideas/idea-${currentIdeaIndex + 1}/rating`);
             ideaRef.once('value').then((snapshot) => {
                 const ratings = snapshot.val();
                 if (ratings) {
@@ -647,7 +640,7 @@
                 return false;
             }
 
-            const sessionRef = database.ref(`formalrating-v1/${sessionId}`);
+            const sessionRef = database.ref(`formalrating-v2/${sessionId}`);
             sessionRef.update({
                 ProlificId: prolificId,
                 uniqueIdeaIndex: sessionId
@@ -665,7 +658,7 @@
 
         function saveTimingData() {
             const duration = (endTime - startTime) / 1000; // Duration in seconds
-            const sessionRef = database.ref(`formalrating-v1/${sessionId}`);
+            const sessionRef = database.ref(`formalrating-v2/${sessionId}`);
             sessionRef.update({
                 StartTime: startTime.toISOString(),
                 EndTime: endTime.toISOString(),

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concept Evaluation</title>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        #surveyPage {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        #surveyTitle h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #3498db;
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group h3 {
+            color: #3498db;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .definition-box {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .definition-box h4 {
+            margin-top: 0;
+            color: #3498db;
+        }
+
+        .definition-box ul {
+            margin: 10px 0;
+        }
+
+        .definition-box li {
+            margin-bottom: 5px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        .idea-pair {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .idea-pair h5 {
+            margin: 10px 0;
+            color: #555;
+        }
+
+        .idea-content {
+            background-color: #fff;
+            padding: 15px;
+            border-left: 3px solid #3498db;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .evaluation-options {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .evaluation-option {
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+        }
+
+        .evaluation-option input[type="radio"] {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .evaluation-option label {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #surveyButton {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            display: block;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto 0;
+            text-align: center;
+            box-sizing: border-box;
+            transition: background-color 0.3s ease;
+        }
+
+        #surveyButton:hover {
+            background-color: #2980b9;
+        }
+
+        #errorSurveyContainer {
+            color: #e74c3c;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #completionPage {
+            text-align: center;
+            padding: 50px;
+            background-color: #fff;
+            max-width: 600px;
+            margin: 50px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #completionPage h2 {
+            color: #27ae60;
+            margin-bottom: 20px;
+        }
+
+        #completionPage h3 {
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 24px;
+        }
+
+        .loading {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+        }
+
+        .row-info {
+            background-color: #e8f4f8;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        .error-page {
+            text-align: center;
+            padding: 50px;
+            background-color: #fff;
+            max-width: 600px;
+            margin: 50px auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #e74c3c;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="surveyPage">
+        <div id="surveyTitle">
+            <h2>Idea Pair Evaluation</h2>
+        </div>
+        <div class="row-info" id="rowInfo" style="display: none;">
+            Evaluating Row: <span id="currentRow"></span>
+        </div>
+        <div class="form-group">
+            <label for="prolificId">Prolific ID:</label>
+            <input type="text" id="prolificId" name="prolificId" required>
+        </div>
+        <div class="form-group">
+            <div class="definition-box">
+                <h4><span style="color: rgb(0, 0, 0);">Please evaluate whether accurately the rewritten idea reflects
+                        the meaning of the original idea.
+                    </span></h4>
+                <p>Review each pair carefully. Choose how well the rewritten idea captures the intent and meaning of the
+                    original idea, regardless of grammar or writing style.</p>
+                <p><strong>Example 1:</strong></p>
+                <ul>
+                    <li><strong>Original Idea:</strong> I have an idea for a remote controlled vehicle toy that
+                        functions as a car on land and a boat on water. To accomplish this, it would have to change
+                        seamlessly from car to boat, or vice versa, as the situation demands. Car wheels would have to
+                        retract if the vehicle enters water, and any boat motor would have to retract if the vehicle
+                        changes back into a car. The entire vehicle would have to be waterproof, especially electrical
+                        components. It could also be adorned with LED lights for style. The remote control could be able
+                        to switch functions depending on which mode the vehicle was using.
+                    </li>
+                    <li><strong>Rewritten Idea:</strong>A remote-controlled vehicle transforms between a car and boat
+                        mode. The toy switches automatically between wheels for land and motor for water, with all
+                        components being waterproof and equipped with LED lights.</li>
+                    <li><strong>Evaluation Result: <span style="color: green;">Accurate</span></li></strong>
+                </ul>
+                <p><strong>Example 2:</strong></p>
+                <ul>
+                    <li><strong>Original Idea:</strong> A GPS-enabled wristwear for kids that helps when they follow
+                        their parent on walks or outings. The device allows parents to track the child, and the child
+                        can also use it to find their way around.</li>
+                    <li><strong>Rewritten Idea:</strong> A smart wristwatch for kids that monitors their physical
+                        activity and sends daily reports to parents through a connected app.</li>
+                    <li><strong>Evaluation Result: <span style="color: red;">Not Accurate</span></li></strong>
+                </ul>
+            </div>
+            <p><strong>Now please evaluate the pair below:</strong></p>
+            <div id="ideaPairContainer">
+                <div class="loading">Loading idea pair...</div>
+            </div>
+            <div class="evaluation-options">
+                <div class="evaluation-option">
+                    <input type="radio" id="accurate" name="evaluation" value="accurate" required>
+                    <label for="accurate">Accurate</label>
+                </div>
+                <div class="evaluation-option">
+                    <input type="radio" id="notAccurate" name="evaluation" value="notAccurate" required>
+                    <label for="notAccurate">Not Accurate</label>
+                </div>
+            </div>
+        </div>
+        <div id="errorSurveyContainer">
+            <div id="errorSurvey"></div>
+        </div>
+        <button id="surveyButton">Submit</button>
+    </div>
+    <div id="completionPage" style="display: none;">
+        <h2>Thank you for completing the evaluation!</h2>
+        <h3>Completion Code: CMPZRNGY</h3>
+    </div>
+
+    <div id="errorPage" style="display: none;" class="error-page">
+        <h2>Error Loading Survey</h2>
+        <p id="errorMessage"></p>
+        <p>Please check the URL parameters and try again.</p>
+    </div>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyA_IQTZ9seX84jj94ldroWf5FMZ1GZWlec",
+            authDomain: "creautd-8d7d3.firebaseapp.com",
+            databaseURL: "https://creautd-8d7d3-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "creautd-8d7d3",
+            storageBucket: "creautd-8d7d3.appspot.com",
+            messagingSenderId: "96441731480",
+            appId: "1:96441731480:web:9797d7aaae86aecaa683ed",
+            measurementId: "G-FSDDCEX397"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        let startTime;
+        let sessionId;
+        let ideaPairData = null;
+        let rowIndex = null;
+
+        database.ref('.info/connected').on('value', function (snapshot) {
+            if (snapshot.val() === true) {
+                console.log('Connected to Firebase');
+                startTime = new Date().toISOString();
+                sessionId = generateSessionId();
+            } else {
+                console.log('Not connected to Firebase');
+            }
+        });
+
+        function generateSessionId() {
+            const timestamp = Date.now().toString(36);
+            const randomStr = Math.random().toString(36).substring(2, 7);
+            return `${timestamp}-${randomStr}`;
+        }
+
+        function getURLParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        function getRowIndexFromURL() {
+            // First, try to get row parameter from URL
+            const rowParam = getURLParameter('row');
+            if (rowParam) {
+                const rowNumber = parseInt(rowParam);
+                if (!isNaN(rowNumber) && rowNumber > 0) {
+                    return rowNumber;
+                }
+            }
+
+            // Fallback: try to get from filename (for backward compatibility)
+            const pathname = window.location.pathname;
+            const filename = pathname.split('/').pop().split('.')[0];
+            const match = filename.match(/rewriting_validation_(\d+)/);
+            if (match) {
+                const x = parseInt(match[1]);
+                return x + 1;
+            }
+
+            // Default to row 1 if neither method works
+            console.warn('Could not extract row index from URL parameter or filename, defaulting to row 1');
+            return 1;
+        }
+
+        async function loadIdeaPair() {
+            try {
+                // Get row index from URL parameter or filename
+                rowIndex = getRowIndexFromURL();
+
+                // Display current row being evaluated
+                document.getElementById('currentRow').textContent = rowIndex;
+                document.getElementById('rowInfo').style.display = 'block';
+
+                // Fetch the Excel file
+                const response = await fetch('https://hujinya2020.github.io/ideation/raw_ideas_standardized_sample100.xlsx');
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch Excel file: ${response.status} ${response.statusText}`);
+                }
+
+                const arrayBuffer = await response.arrayBuffer();
+
+                // Parse Excel file
+                const workbook = XLSX.read(arrayBuffer, { type: 'array' });
+                const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+                const jsonData = XLSX.utils.sheet_to_json(firstSheet);
+
+                console.log(`Total rows in Excel: ${jsonData.length + 1} (including header)`);
+                console.log(`Requested row: ${rowIndex}`);
+
+                // Excel data is 0-indexed in the JSON array, but 1-indexed in Excel rows
+                // So if we want row 2 from Excel, we need index 0 in the array
+                const dataIndex = rowIndex - 2; // Subtract 2 because row 1 is header, row 2 is index 0
+
+                if (dataIndex >= 0 && dataIndex < jsonData.length) {
+                    ideaPairData = jsonData[dataIndex];
+
+                    // Validate that required fields exist
+                    if (!ideaPairData.idea && !ideaPairData.idea_standardized) {
+                        throw new Error(`Row ${rowIndex} does not contain the required idea data`);
+                    }
+
+                    // Display the idea pair
+                    const container = document.getElementById('ideaPairContainer');
+                    container.innerHTML = `
+                        <div class="idea-pair">
+                            <h5>Original Idea:</h5>
+                            <div class="idea-content">${ideaPairData.idea || 'No original idea found'}</div>
+                            
+                            <h5>Rewritten Idea:</h5>
+                            <div class="idea-content">${ideaPairData.idea_standardized || 'No rewritten idea found'}</div>
+                        </div>
+                    `;
+
+                    console.log('Successfully loaded idea pair for row:', rowIndex);
+                } else {
+                    throw new Error(`Row ${rowIndex} not found in the Excel file. Available rows: 2-${jsonData.length + 1}`);
+                }
+            } catch (error) {
+                console.error('Error loading idea pair:', error);
+                showError(error.message);
+            }
+        }
+
+        function showError(message) {
+            document.getElementById('surveyPage').style.display = 'none';
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorPage').style.display = 'block';
+        }
+
+        function submitSurvey() {
+            console.log("Submit function called");
+
+            const prolificId = document.getElementById('prolificId').value.trim();
+            if (!prolificId) {
+                alert('Please enter your Prolific ID');
+                return;
+            }
+
+            const selectedEvaluation = document.querySelector('input[name="evaluation"]:checked');
+            if (!selectedEvaluation) {
+                alert('Please select either "Accurate" or "Not Accurate" before submitting.');
+                return;
+            }
+
+            const surveyData = {
+                sessionId: sessionId,
+                prolificId: prolificId,
+                startTime: startTime,
+                submissionTime: new Date().toISOString(),
+                rowIndex: rowIndex,
+                urlParameters: window.location.search,
+                originalIdea: ideaPairData?.idea || 'Not loaded',
+                rewrittenIdea: ideaPairData?.idea_standardized || 'Not loaded',
+                evaluation: selectedEvaluation.value
+            };
+
+            console.log("Submitting data:", surveyData);
+
+            database.ref('pretest-v5').child(sessionId).set(surveyData)
+                .then(() => {
+                    console.log("Document written with ID: ", sessionId);
+                    document.getElementById('surveyPage').style.display = 'none';
+                    document.getElementById('completionPage').style.display = 'block';
+                })
+                .catch((error) => {
+                    console.error("Error adding document: ", error);
+                    let errorMessage = 'An error occurred while submitting the form. ';
+                    if (error.code === 'PERMISSION_DENIED') {
+                        errorMessage += 'Permission denied. Please check database rules.';
+                    } else {
+                        errorMessage += error.message;
+                    }
+                    alert(errorMessage);
+                });
+        }
+
+        window.onload = function () {
+            startTime = new Date().toISOString();
+            sessionId = generateSessionId();
+
+            // Load the idea pair from Excel
+            loadIdeaPair();
+
+            // Set up submit button
+            document.getElementById('surveyButton').onclick = submitSurvey;
+        };
+    </script>
+</body>
+
+</html>

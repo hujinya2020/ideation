@@ -421,22 +421,21 @@
             }
 
             const surveyData = {
-                sessionId: sessionId,
-                prolificId: prolificId,
-                startTime: startTime,
                 submissionTime: new Date().toISOString(),
+                prolificId: prolificId,
                 rowIndex: rowIndex,
-                urlParameters: window.location.search,
                 originalIdea: ideaPairData?.idea || 'Not loaded',
                 rewrittenIdea: ideaPairData?.idea_standardized || 'Not loaded',
+                uniqueIdeaIndex: ideaPairData?.uniqueIdeaIndex || null,
                 evaluation: selectedEvaluation.value
             };
 
             console.log("Submitting data:", surveyData);
 
-            database.ref('pretest-v5').child(sessionId).set(surveyData)
-                .then(() => {
-                    console.log("Document written with ID: ", sessionId);
+            // Use push() to create a unique key for each submission under 'rewriting' node
+            database.ref('rewriting').push(surveyData)
+                .then((ref) => {
+                    console.log("Document written with ID: ", ref.key);
                     document.getElementById('surveyPage').style.display = 'none';
                     document.getElementById('completionPage').style.display = 'block';
                 })
